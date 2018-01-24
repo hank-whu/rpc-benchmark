@@ -26,10 +26,10 @@ import benchmark.rpc.util.JsonUtils;
  */
 public class UserServiceJsonHttpClientImpl implements UserService {
 
-	private static final String URL_EXIST_USER = "http://127.0.0.1:8080/user-exist?email=";
-	private static final String URL_CREATE_USER = "http://127.0.0.1:8080/create-user";
-	private static final String URL_GET_USER = "http://127.0.0.1:8080/get-user?id=";
-	private static final String URL_LIST_USER = "http://127.0.0.1:8080/list-user?pageNo=";
+	private static final String URL_EXIST_USER = "http://benchmark-server:8080/user-exist?email=";
+	private static final String URL_CREATE_USER = "http://benchmark-server:8080/create-user";
+	private static final String URL_GET_USER = "http://benchmark-server:8080/get-user?id=";
+	private static final String URL_LIST_USER = "http://benchmark-server:8080/list-user?pageNo=";
 
 	private final CloseableHttpClient client;
 	private final ObjectMapper objectMapper = JsonUtils.objectMapper;

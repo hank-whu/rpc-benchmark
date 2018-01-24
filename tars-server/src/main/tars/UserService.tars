@@ -1,0 +1,36 @@
+module Tars 
+{
+	struct TarsUser
+	{
+	    0 require long id;
+		1 require string name;
+		2 require int sex;
+		3 require int birthday;
+		4 require string email;
+		5 require string mobile;
+		6 require string address;
+		7 require string icon;
+		8 require vector<int> permissions;
+		9 require int status;
+		10 require long createTime;
+		11 require long updateTime;
+	};
+	
+	struct TarsPage
+	{
+		0 require int pageNo;
+		1 require int total;
+		2 require vector<TarsUser> result;
+	}
+
+    interface TarsUserService
+    {
+        bool existUser(string email);
+        
+        bool createUser(TarsUser user);
+        
+        TarsUser getUser(long id);
+
+		TarsPage listUser(int pageNo);
+    };
+};

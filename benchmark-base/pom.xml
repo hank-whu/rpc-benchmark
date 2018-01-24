@@ -4,24 +4,22 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>benchmark-base</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>round-1</version>
 	<packaging>jar</packaging>
 
 	<name>benchmark-base</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.9</maven.compiler.source>
+		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.jmh>1.19</version.jmh>
+		<version.jmh>1.20</version.jmh>
 		<logback.version>1.2.3</logback.version>
 		<version.httpclient>4.5.4</version.httpclient>
-		<version.jackson>2.9.2</version.jackson>
+		<version.jackson>2.9.3</version.jackson>
 		<version.kryo>4.0.1</version.kryo>
 		<version.protostuff>1.6.0</version.protostuff>
-		<version.fst>2.54</version.fst>
-		<version.stormpot>2.4.1</version.stormpot>
 	</properties>
 
 	<dependencies>
@@ -80,16 +78,7 @@
 			<artifactId>protostuff-runtime</artifactId>
 			<version>${version.protostuff}</version>
 		</dependency>
-		<dependency>
-			<groupId>de.ruedigermoeller</groupId>
-			<artifactId>fst</artifactId>
-			<version>${version.fst}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.chrisvest</groupId>
-			<artifactId>stormpot</artifactId>
-			<version>${version.stormpot}</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -100,8 +89,8 @@
 				<version>3.7.0</version>
 				<configuration>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
-					<source>8</source>
-					<target>8</target>
+					<source>9</source>
+					<target>9</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

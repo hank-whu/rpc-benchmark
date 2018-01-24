@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>benchmark.rpc</groupId>
+	<artifactId>tars-client</artifactId>
+	<version>round-1</version>
+	<packaging>jar</packaging>
+
+	<name>tars-client</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<maven.compiler.source>1.9</maven.compiler.source>
+		<maven.compiler.target>1.9</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.benchmark-base>round-1</version.benchmark-base>
+		<version.tars>1.0.3</version.tars>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>benchmark.rpc</groupId>
+			<artifactId>benchmark-base</artifactId>
+			<version>${version.benchmark-base}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.tencent.tars</groupId>
+			<artifactId>tars-client</artifactId>
+			<version>${version.tars}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<source>9</source>
+					<target>9</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.tencent.tars</groupId>
+				<artifactId>tars-maven-plugin</artifactId>
+				<version>${version.tars}</version>
+				<configuration>
+					<tars2JavaConfig>
+						<!-- tars文件位置 -->
+						<tarsFiles>
+							<tarsFile>${basedir}/src/main/tars/UserService.tars</tarsFile>
+						</tarsFiles>
+						<!-- 源文件编码 -->
+						<tarsFileCharset>UTF-8</tarsFileCharset>
+						<!-- 生成代码，PS：客户端调用，这里需要设置为false -->
+						<servant>false</servant>
+						<!-- 生成源代码编码 -->
+						<charset>UTF-8</charset>
+						<!-- 生成的源代码目录 -->
+						<srcPath>${basedir}/src/main/java</srcPath>
+						<!-- 生成源代码包前缀 -->
+						<packagePrefixName>benchmark.rpc.</packagePrefixName>
+					</tars2JavaConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/tars</directory>
+			</resource>
+		</resources>
+	</build>
+</project>

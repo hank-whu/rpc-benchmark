@@ -13,7 +13,7 @@ import benchmark.service.UserService;
 
 public class UserServiceNettyClientImpl implements UserService, Closeable {
 
-	public static final String host = "127.0.0.1";
+	public static final String host = "benchmark-server";
 	public static final int port = 8080;
 
 	private final NettyClientConnector connector = new NettyClientConnector(host, port);

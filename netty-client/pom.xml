@@ -4,18 +4,18 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>netty-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>round-1</version>
 	<packaging>jar</packaging>
 
 	<name>netty-client</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.9</maven.compiler.source>
+		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>0.0.1-SNAPSHOT</version.benchmark-base>
-		<netty.version>4.1.16.Final</netty.version>
+		<version.benchmark-base>round-1</version.benchmark-base>
+		<netty.version>4.1.19.Final</netty.version>
 	</properties>
 
 	<dependencies>
@@ -54,8 +54,8 @@
 				<version>3.7.0</version>
 				<configuration>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
-					<source>8</source>
-					<target>8</target>
+					<source>9</source>
+					<target>9</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

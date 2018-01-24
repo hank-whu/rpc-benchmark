@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="benchmark.rpc.dubbo-server" />
+
+	<!-- 用dubbo协议在8080端口暴露服务 -->
+	<dubbo:protocol name="dubbo" host="benchmark-server" port="8080" />
+	<!-- <dubbo:protocol name="dubbo" port="8080" serialization="kryo" /> -->
+
+	<dubbo:registry address="N/A" />
+
+	<!-- 声明需要暴露的服务接口 -->
+	<dubbo:service interface="benchmark.service.UserService"
+		ref="userService" />
+
+	<!-- 和本地bean一样实现服务 -->
+	<bean id="userService" class="benchmark.service.UserServiceServerImpl" />
+
+</beans>

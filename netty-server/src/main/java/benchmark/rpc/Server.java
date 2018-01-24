@@ -20,7 +20,7 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 
 public class Server {
 
-	public static final String host = "0.0.0.0";
+	public static final String host = "benchmark-server";
 	public static final int port = 8080;
 
 	static {

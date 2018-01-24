@@ -75,7 +75,7 @@ public class NettyClientConnector implements Closeable {
 		}
 
 		if (eventLoopGroup != null) {
-			eventLoopGroup.shutdownGracefully(1, 1, TimeUnit.MILLISECONDS);
+			eventLoopGroup.shutdownGracefully();
 		}
 
 	}

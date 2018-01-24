@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servants>
+	<servant name="UserService" protocol="tars" host="benchmark-server" port="18600">
+		<home-api>benchmark.rpc.tars.TarsUserServiceServant</home-api>
+		<home-class>benchmark.rpc.tars.UserServiceTarsServerImpl</home-class>
+	</servant>
+</servants>
