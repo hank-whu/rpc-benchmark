@@ -11,6 +11,8 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<maven.compiler.source>1.9</maven.compiler.source>
+		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-1</version.benchmark-base>
 		<version.undertow>1.4.21.Final</version.undertow>
@@ -46,6 +48,8 @@
 				<version>3.7.0</version>
 				<configuration>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<source>9</source>
+					<target>9</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
