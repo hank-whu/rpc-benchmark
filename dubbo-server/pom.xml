@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-1</version.benchmark-base>
 		<version.dubbo>2.6.0</version.dubbo>
+		<version.javakaffee>0.42</version.javakaffee>
 	</properties>
 
 	<dependencies>
@@ -28,6 +29,11 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
 			<version>${version.dubbo}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.javakaffee</groupId>
+			<artifactId>kryo-serializers</artifactId>
+			<version>${version.javakaffee}</version>
 		</dependency>
 
 		<dependency>

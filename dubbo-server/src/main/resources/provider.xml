@@ -7,7 +7,8 @@
 	<dubbo:application name="benchmark.rpc.dubbo-server" />
 
 	<!-- 用dubbo协议在8080端口暴露服务 -->
-	<dubbo:protocol name="dubbo" host="benchmark-server" port="8080" />
+	<dubbo:protocol name="dubbo" host="benchmark-server"
+		port="8080" serialization="kryo" />
 	<!-- <dubbo:protocol name="dubbo" port="8080" serialization="kryo" /> -->
 
 	<dubbo:registry address="N/A" />
