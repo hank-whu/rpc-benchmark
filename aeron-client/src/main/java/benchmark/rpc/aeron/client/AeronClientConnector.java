@@ -6,36 +6,19 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.agrona.concurrent.BackoffIdleStrategy;
-
 import benchmark.rpc.protocol.Request;
 import benchmark.rpc.protocol.Response;
 import benchmark.service.ServiceRegister;
-import io.aeron.driver.MediaDriver;
-import io.aeron.driver.ThreadingMode;
 
 public class AeronClientConnector implements ResponseCallback, Closeable {
 
 	private final FutureContainer futureContainer = new FutureContainer();
 	private final long defaultTimeout = 10_000L;
 
-	private volatile MediaDriver mediaDriver;
 	private volatile Publisher publisher;
 	private volatile Subscriber subscriber;
 
-	private static final MediaDriver.Context ctx = new MediaDriver.Context()//
-			.termBufferSparseFile(false)//
-			.threadingMode(ThreadingMode.DEDICATED)//
-			.conductorIdleStrategy(new BackoffIdleStrategy(1000, 100, TimeUnit.MICROSECONDS.toNanos(1),
-					TimeUnit.MICROSECONDS.toNanos(100)))//
-			.receiverIdleStrategy(new BackoffIdleStrategy(1000, 100, TimeUnit.MICROSECONDS.toNanos(1),
-					TimeUnit.MICROSECONDS.toNanos(100)))//
-			.senderIdleStrategy(new BackoffIdleStrategy(1000, 100, TimeUnit.MICROSECONDS.toNanos(1),
-					TimeUnit.MICROSECONDS.toNanos(100)));
-
 	public void connect() {
-		//mediaDriver = MediaDriver.launch(ctx);
-
 		publisher = new Publisher();
 		publisher.connect();
 
@@ -45,11 +28,6 @@ public class AeronClientConnector implements ResponseCallback, Closeable {
 
 	@Override
 	public void close() throws IOException {
-		try {
-			//mediaDriver.close();
-		} catch (Exception e1) {
-		}
-
 		try {
 			publisher.close();
 		} catch (Exception e) {
