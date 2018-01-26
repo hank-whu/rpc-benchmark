@@ -1,7 +1,6 @@
 package benchmark.rpc;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,7 +21,6 @@ import benchmark.rpc.service.TurboUserService;
 import benchmark.service.UserService;
 import benchmark.service.UserServiceServerImpl;
 import rpc.turbo.client.TurboClient;
-import rpc.turbo.config.HostPort;
 
 @State(Scope.Benchmark)
 public class Client {
@@ -35,8 +33,7 @@ public class Client {
 	private final TurboUserService userService;
 
 	public Client() {
-		client = new TurboClient();
-		client.addConnect("shop", "auth", new HostPort("benchmark-server", 8080));
+		client = new TurboClient("turbo-client.conf");
 
 		try {
 			client.register(TurboUserService.class);
