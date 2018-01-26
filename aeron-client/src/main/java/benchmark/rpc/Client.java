@@ -87,8 +87,8 @@ public class Client extends AbstractClient {
 
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
-				.warmupIterations(5)//
-				.measurementIterations(5)//
+				.warmupIterations(10)//
+				.measurementIterations(3)//
 				.threads(CONCURRENCY)//
 				.forks(1)//
 				.build();
