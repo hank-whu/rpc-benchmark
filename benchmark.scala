@@ -9,6 +9,7 @@ object benchmark {
 		installBenchmarkBase()
 
 		val allTasks = getAllTasks()
+		println("找到以下benchmark项目:")
 		println(allTasks.mkString(", "))
 
 		getAllTasks().foreach(benchmark(_))
@@ -34,6 +35,7 @@ object benchmark {
 
 		startServer(serverPackage)
 
+		//等服务器启动起来在启动客户端
 		TimeUnit.MILLISECONDS.sleep(15)
 
 		startClient(clientPackage)
@@ -56,10 +58,13 @@ object benchmark {
 
 		val resultPath = name.substring(0, name.length() - "-jar-with-dependencies.jar".length()) + ".log"
 
+		//copy到benchmark-server
 		exec(serverPackage.getParentFile, s"scp ${name} benchmark@benchmark-server:~")
 
+		//杀掉benchmark-server上的老进程
 		exec(Array("ssh", "benchmark@benchmark-server", "killall java"))
 
+		//benchmark-server上启动服务器
 		val remoteCommand = s"nohup java -server -Xmx1g -Xms1g -XX:MaxDirectMemorySize=1g -XX:+UseG1GC -jar ${name} >> ${resultPath} &"
 		exec(Array("ssh", "benchmark@benchmark-server", remoteCommand))
 	}
@@ -68,6 +73,7 @@ object benchmark {
 		val name = serverPackage.getName
 		println(s"stop $name")
 
+		//benchmark-server上启动服务器
 		exec("ssh benchmark@benchmark-server \"killall java\"")
 	}
 
@@ -79,6 +85,7 @@ object benchmark {
 
 		val command = s"java -server -Xmx1g -Xms1g -XX:MaxDirectMemorySize=1g -XX:+UseG1GC -jar ${name}"
 
+		//启动客户端
 		exec(clientPackage.getParentFile, command, resultFile)
 	}
 
