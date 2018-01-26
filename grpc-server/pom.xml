@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-1</version.benchmark-base>
 		<version.grpc>1.9.0</version.grpc>
+		<version.jsr250>1.0</version.jsr250>
 	</properties>
 
 	<dependencies>
@@ -38,6 +39,11 @@
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-stub</artifactId>
 			<version>${version.grpc}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<version>${version.jsr250}</version>
 		</dependency>
 
 		<dependency>
