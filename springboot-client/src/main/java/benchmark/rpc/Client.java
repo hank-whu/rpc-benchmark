@@ -61,7 +61,18 @@ public class Client extends AbstractClient {
 		return super.listUser();
 	}
 
-	public static void main(String[] args) throws RunnerException {
+	public static void main(String[] args) throws RunnerException, InterruptedException {
+		Client client = new Client();
+
+		for (int i = 0; i < 60; i++) {
+			try {
+				System.out.println(client.getUser());
+				break;
+			} catch (Exception e) {
+				Thread.sleep(1000);
+			}
+		}
+
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
 				.warmupIterations(10)//
