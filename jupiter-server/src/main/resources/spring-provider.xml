@@ -24,10 +24,10 @@
 	</jupiter:server>
 
 	<!-- provider -->
-	<bean id="userService" class="benchmark.service.UserServiceServerImpl" />
+	<bean id="jupiterUserService" class="benchmark.service.JupiterUserServiceServerImpl" />
 
-	<jupiter:provider id="userServiceProvider" server="jupiterServer"
-		providerImpl="userService">
+	<jupiter:provider id="jupiterUserServiceProvider"
+		server="jupiterServer" providerImpl="jupiterUserService">
 		<jupiter:property weight="100" />
 	</jupiter:provider>
 </beans>

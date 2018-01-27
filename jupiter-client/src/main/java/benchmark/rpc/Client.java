@@ -2,6 +2,7 @@ package benchmark.rpc;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jupiter.spring.support.JupiterSpringClient;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -18,23 +19,23 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
+import benchmark.service.JupiterUserService;
 import benchmark.service.UserService;
+import benchmark.service.UserServiceServerImpl;
 
 @State(Scope.Benchmark)
-public class Client extends AbstractClient {
+public class Client {
 	public static final int CONCURRENCY = 32;
 
+	private final AtomicInteger counter = new AtomicInteger(0);
+	private final UserService _serviceUserService = new UserServiceServerImpl();
+
 	private final ClassPathXmlApplicationContext context;
-	private final UserService userService;
+	private final JupiterUserService userService;
 
 	public Client() {
 		context = new ClassPathXmlApplicationContext("classpath:spring-consumer.xml");
-		userService = context.getBean(UserService.class);
-	}
-
-	@Override
-	protected UserService getUserService() {
-		return userService;
+		userService = context.getBean(JupiterUserService.class);
 	}
 
 	@TearDown
@@ -46,33 +47,34 @@ public class Client extends AbstractClient {
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	@Override
 	public boolean existUser() throws Exception {
-		return super.existUser();
+		String email = String.valueOf(counter.getAndIncrement());
+		return userService.existUser(email);
 	}
 
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	@Override
 	public boolean createUser() throws Exception {
-		return super.createUser();
+		int id = counter.getAndIncrement();
+		User user = _serviceUserService.getUser(id);
+		return userService.createUser(user);
 	}
 
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	@Override
 	public User getUser() throws Exception {
-		return super.getUser();
+		int id = counter.getAndIncrement();
+		return userService.getUser(id);
 	}
 
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	@Override
 	public Page<User> listUser() throws Exception {
-		return super.listUser();
+		int pageNo = counter.getAndIncrement();
+		return userService.listUser(pageNo);
 	}
 
 	public static void main(String[] args) throws Exception {

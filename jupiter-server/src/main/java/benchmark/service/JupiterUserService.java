@@ -5,8 +5,8 @@ import org.jupiter.rpc.ServiceProvider;
 import benchmark.bean.Page;
 import benchmark.bean.User;
 
-@ServiceProvider(group = "test", name = "userService")
-public interface UserService {
+@ServiceProvider(group = "test", name = "jupiterUserService")
+public interface JupiterUserService {
 	public boolean existUser(String email);
 
 	public boolean createUser(User user);
