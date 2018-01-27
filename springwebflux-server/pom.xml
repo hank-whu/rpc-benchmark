@@ -31,17 +31,43 @@
 			<id>io.spring.repo.maven.release</id>
 			<url>http://repo.spring.io/release/</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 		<repository>
 			<id>io.spring.repo.maven.milestone</id>
 			<url>http://repo.spring.io/milestone/</url>
 			<snapshots>
-				<enabled>false</enabled>
+				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 	</repositories>
+	
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>http://repo1.maven.org/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>io.spring.repo.maven.release</id>
+			<url>http://repo.spring.io/release/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>io.spring.repo.maven.milestone</id>
+			<url>http://repo.spring.io/milestone/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<dependencies>
 		<dependency>
@@ -91,7 +117,24 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring-boot.version}</version>
+				<configuration>
+					<fork>true</fork>
+					<mainClass>benchmark.rpc.Server</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.1.0</version>
@@ -101,6 +144,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
+							<addClasspath>true</addClasspath>
 							<mainClass>benchmark.rpc.Server</mainClass>
 						</manifest>
 					</archive>

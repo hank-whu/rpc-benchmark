@@ -1,10 +1,8 @@
 package benchmark.rpc;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.reactive.config.EnableWebFlux;
@@ -14,9 +12,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
+@SpringBootApplication(scanBasePackages = { "benchmark.rpc.webflux" })
 @EnableWebFlux
 public class Server {
 	public static void main(String[] args) {

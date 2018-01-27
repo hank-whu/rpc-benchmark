@@ -1,6 +1,6 @@
-package benchmark.rpc.rapidoid.server;
+package benchmark.rpc.springboot.server;
 
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import benchmark.bean.User;
@@ -8,11 +8,12 @@ import benchmark.service.UserService;
 import benchmark.service.UserServiceServerImpl;
 
 @RestController
-public class CreateUserController {
+public class GetUserController {
 	private final UserService userService = new UserServiceServerImpl();
 
-	@PostMapping("create-user")
-	public boolean createUser(User user) {
-		return userService.createUser(user);
+	@GetMapping("get-user")
+	public User getUser(int id) {
+		User user = userService.getUser(id);
+		return user;
 	}
 }
