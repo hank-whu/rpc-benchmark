@@ -16,30 +16,31 @@
 
 package benchmark.rpc;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+
 import org.jupiter.monitor.MonitorServer;
 import org.jupiter.registry.RegistryServer;
 
 /**
- * 1.启动 SpringRegistryServer
- * 2.再启动 SpringServer
- * 3.最后启动 SpringClient
+ * 1.启动 SpringRegistryServer 2.再启动 SpringServer 3.最后启动 SpringClient
  *
- * jupiter
- * org.jupiter.example.spring
+ * jupiter org.jupiter.example.spring
  *
  * @author jiachun.fjc
  */
 public class SpringJupiterRegistryServer {
 
-    public static void main(String[] args) {
-        RegistryServer registryServer = RegistryServer.Default.createRegistryServer(20001, 1);      // 注册中心
-        MonitorServer monitor = new MonitorServer(19998);                                           // 监控服务
-        try {
-            monitor.setRegistryMonitor(registryServer);
-            monitor.start();
-            registryServer.startRegistryServer();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+	public static void main(String[] args) {
+		SocketAddress registryServerAddress = new InetSocketAddress("benchmark-server", 20001);
+		RegistryServer registryServer = RegistryServer.Default.createRegistryServer(registryServerAddress, 1); // 注册中心
+		MonitorServer monitor = new MonitorServer(19998); // 监控服务
+		try {
+			monitor.setRegistryMonitor(registryServer);
+			monitor.start();
+			registryServer.startRegistryServer();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }
