@@ -15,7 +15,7 @@
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-1</version.benchmark-base>
-		<version.turbo>0.0.1</version.turbo>
+		<version.turbo>0.0.2</version.turbo>
 	</properties>
 
 	<dependencies>
