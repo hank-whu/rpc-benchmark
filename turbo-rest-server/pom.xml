@@ -51,6 +51,7 @@
 					<source>9</source>
 					<target>9</target>
 					<encoding>UTF-8</encoding>
+					<compilerArgument>-parameters</compilerArgument>
 				</configuration>
 			</plugin>
 			<plugin>
