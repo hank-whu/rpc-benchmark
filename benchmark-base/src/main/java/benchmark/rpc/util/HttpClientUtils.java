@@ -8,9 +8,9 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 public class HttpClientUtils {
 
-	public static final int SOCKET_TIMEOUT = 1500;
-	public static final int CONNECTION_REQUEST_TIMEOUT = 3000;
-	public static final int CONNECT_TIMEOUT = 3000;
+	public static final int SOCKET_TIMEOUT = 15000;
+	public static final int CONNECTION_REQUEST_TIMEOUT = 30000;
+	public static final int CONNECT_TIMEOUT = 30000;
 
 	public static CloseableHttpClient createHttpClient(int concurrency) {
 		HttpClientBuilder builder = HttpClientBuilder.create();
