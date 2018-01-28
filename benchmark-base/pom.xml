@@ -22,6 +22,7 @@
 		<version.protostuff>1.6.0</version.protostuff>
 		<version.jsr250>1.0</version.jsr250>
 		<version.vibur>21.2</version.vibur>
+		<version.conversantmedia-disruptor>1.2.11</version.conversantmedia-disruptor>
 	</properties>
 
 	<dependencies>
@@ -90,7 +91,11 @@
 			<artifactId>vibur-object-pool</artifactId>
 			<version>${version.vibur}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.conversantmedia</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${version.conversantmedia-disruptor}</version>
+		</dependency>
 
 	</dependencies>
 

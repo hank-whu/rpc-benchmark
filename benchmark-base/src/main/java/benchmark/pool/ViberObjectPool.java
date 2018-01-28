@@ -8,7 +8,7 @@ import org.vibur.objectpool.ConcurrentPool;
 import org.vibur.objectpool.PoolObjectFactory;
 import org.vibur.objectpool.PoolService;
 import org.vibur.objectpool.util.ConcurrentCollection;
-import org.vibur.objectpool.util.ConcurrentLinkedQueueCollection;
+import org.vibur.objectpool.util.MultithreadConcurrentQueueCollection;
 
 public class ViberObjectPool<T> implements Closeable {
 
@@ -44,7 +44,7 @@ public class ViberObjectPool<T> implements Closeable {
 			}
 		};
 
-		ConcurrentCollection<T> concurrentCollection = new ConcurrentLinkedQueueCollection<>();
+		ConcurrentCollection<T> concurrentCollection = new  MultithreadConcurrentQueueCollection<>(poolSize);
 		pool = new ConcurrentPool<>(concurrentCollection, poolObjectFactory, poolSize, poolSize, false);
 	}
 
