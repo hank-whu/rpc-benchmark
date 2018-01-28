@@ -67,7 +67,6 @@ public class Client extends AbstractClient {
 		for (int i = 0; i < 60; i++) {
 			try {
 				System.out.println(client.getUser());
-				break;
 			} catch (Exception e) {
 				Thread.sleep(1000);
 			}

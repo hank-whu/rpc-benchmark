@@ -68,6 +68,19 @@ public class Client extends AbstractClient {
 	}
 
 	public static void main(String[] args) throws Exception {
+		Client client = new Client();
+
+		for (int i = 0; i < 60; i++) {
+			try {
+				System.out.println(client.getUser());
+				break;
+			} catch (Exception e) {
+				Thread.sleep(1000);
+			}
+		}
+
+		client.close();
+
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
 				.warmupIterations(10)//

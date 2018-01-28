@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
+import benchmark.pool.BlazeObjectPool;
 import benchmark.rpc.grpc.UserServiceOuterClass.CreateUserResponse;
 import benchmark.rpc.grpc.UserServiceOuterClass.GetUserRequest;
 import benchmark.rpc.grpc.UserServiceOuterClass.ListUserRequest;
@@ -18,38 +18,38 @@ import benchmark.rpc.grpc.UserServiceOuterClass.UserExistRequest;
 import benchmark.rpc.grpc.UserServiceOuterClass.UserExistResponse;
 import benchmark.rpc.grpc.UserServiceOuterClass.UserPage;
 import benchmark.service.UserService;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 public class UserServiceGrpcClientImpl implements UserService, Closeable {
 
 	private final String host = "benchmark-server";
 	private final int port = 8080;
 
-	private final ManagedChannel channel;
-	private final UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub;
+	private static final int NCPU = Runtime.getRuntime().availableProcessors();
 
-	public UserServiceGrpcClientImpl() {
-		ManagedChannelBuilder<?> channelBuilder = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true);
-		channel = channelBuilder.build();
-		userServiceBlockingStub = UserServiceGrpc.newBlockingStub(channel);
-	}
+	private final BlazeObjectPool<GrpcUserServiceClient> clientPool = //
+			new BlazeObjectPool<>(NCPU, () -> new GrpcUserServiceClient(host, port));
 
 	@Override
 	public void close() throws IOException {
-		try {
-			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		clientPool.close();
 	}
 
 	@Override
 	public boolean existUser(String email) {
-		UserExistRequest request = UserExistRequest.newBuilder().setEmail(email).build();
-		UserExistResponse response = userServiceBlockingStub.userExist(request);
+		GrpcUserServiceClient grpcUserServiceClient = clientPool.borrow();
+		try {
+			UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub = grpcUserServiceClient.userServiceBlockingStub;
 
-		return response.getExist();
+			UserExistRequest request = UserExistRequest.newBuilder().setEmail(email).build();
+			UserExistResponse response = userServiceBlockingStub.userExist(request);
+
+			return response.getExist();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(grpcUserServiceClient);
+		}
+
 	}
 
 	@Override
@@ -70,15 +70,36 @@ public class UserServiceGrpcClientImpl implements UserService, Closeable {
 				.setUpdateTime(user.getUpdateTime().toEpochSecond(ZoneOffset.UTC))//
 				.build();
 
-		CreateUserResponse response = userServiceBlockingStub.createUser(request);
+		GrpcUserServiceClient grpcUserServiceClient = clientPool.borrow();
+		try {
+			UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub = grpcUserServiceClient.userServiceBlockingStub;
 
-		return response.getSuccess();
+			CreateUserResponse response = userServiceBlockingStub.createUser(request);
+
+			return response.getSuccess();
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(grpcUserServiceClient);
+		}
+
 	}
 
 	@Override
 	public User getUser(long id) {
 		GetUserRequest request = GetUserRequest.newBuilder().setId(id).build();
-		benchmark.rpc.grpc.UserServiceOuterClass.User response = userServiceBlockingStub.getUser(request);
+		benchmark.rpc.grpc.UserServiceOuterClass.User response;
+
+		GrpcUserServiceClient grpcUserServiceClient = clientPool.borrow();
+		try {
+			UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub = grpcUserServiceClient.userServiceBlockingStub;
+
+			response = userServiceBlockingStub.getUser(request);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(grpcUserServiceClient);
+		}
 
 		User user = new User();
 		user.setId(response.getId());
@@ -100,7 +121,18 @@ public class UserServiceGrpcClientImpl implements UserService, Closeable {
 	@Override
 	public Page<User> listUser(int pageNo) {
 		ListUserRequest request = ListUserRequest.newBuilder().setPageNo(pageNo).build();
-		UserPage response = userServiceBlockingStub.listUser(request);
+		UserPage response;
+
+		GrpcUserServiceClient grpcUserServiceClient = clientPool.borrow();
+		try {
+			UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub = grpcUserServiceClient.userServiceBlockingStub;
+
+			response = userServiceBlockingStub.listUser(request);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(grpcUserServiceClient);
+		}
 
 		Page<User> page = new Page<>();
 
