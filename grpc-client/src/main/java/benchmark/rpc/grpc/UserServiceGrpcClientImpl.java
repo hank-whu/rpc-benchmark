@@ -10,7 +10,7 @@ import java.util.List;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
-import benchmark.pool.BlazeObjectPool;
+import benchmark.pool.ViberObjectPool;
 import benchmark.rpc.grpc.UserServiceOuterClass.CreateUserResponse;
 import benchmark.rpc.grpc.UserServiceOuterClass.GetUserRequest;
 import benchmark.rpc.grpc.UserServiceOuterClass.ListUserRequest;
@@ -26,8 +26,8 @@ public class UserServiceGrpcClientImpl implements UserService, Closeable {
 
 	private static final int NCPU = Runtime.getRuntime().availableProcessors();
 
-	private final BlazeObjectPool<GrpcUserServiceClient> clientPool = //
-			new BlazeObjectPool<>(NCPU, () -> new GrpcUserServiceClient(host, port));
+	private final ViberObjectPool<GrpcUserServiceClient> clientPool = //
+			new ViberObjectPool<>(NCPU, () -> new GrpcUserServiceClient(host, port));
 
 	@Override
 	public void close() throws IOException {

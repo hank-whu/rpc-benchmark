@@ -21,6 +21,7 @@
 		<version.kryo>4.0.1</version.kryo>
 		<version.protostuff>1.6.0</version.protostuff>
 		<version.jsr250>1.0</version.jsr250>
+		<version.vibur>21.2</version.vibur>
 	</properties>
 
 	<dependencies>
@@ -84,6 +85,12 @@
 			<artifactId>jsr250-api</artifactId>
 			<version>${version.jsr250}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vibur</groupId>
+			<artifactId>vibur-object-pool</artifactId>
+			<version>${version.vibur}</version>
+		</dependency>
+
 
 	</dependencies>
 
