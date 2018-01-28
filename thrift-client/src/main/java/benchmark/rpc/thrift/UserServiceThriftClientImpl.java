@@ -8,7 +8,6 @@ import java.util.List;
 import benchmark.bean.Page;
 import benchmark.bean.User;
 import benchmark.pool.BlazeObjectPool;
-import benchmark.pool.PoolableObject;
 import benchmark.service.UserServiceServerImpl;
 
 public class UserServiceThriftClientImpl implements benchmark.service.UserService, Closeable {
@@ -19,7 +18,7 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	private static final int NCPU = Runtime.getRuntime().availableProcessors();
 
 	private final BlazeObjectPool<ThriftUserServiceClient> clientPool = //
-			new BlazeObjectPool<>(NCPU * 2, () -> new ThriftUserServiceClient(host, port));
+			new BlazeObjectPool<>(NCPU, () -> new ThriftUserServiceClient(host, port));
 
 	@Override
 	public void close() throws IOException {
@@ -28,10 +27,13 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 
 	@Override
 	public boolean existUser(String email) {
-		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
-			return poolable.get().client.userExist(email);
+		ThriftUserServiceClient thriftUserServiceClient = clientPool.borrow();
+		try {
+			return thriftUserServiceClient.client.userExist(email);
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(thriftUserServiceClient);
 		}
 	}
 
@@ -39,33 +41,40 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	public boolean createUser(User user) {
 		benchmark.rpc.thrift.User thriftUser = Converter.toThrift(user);
 
-		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
-			return poolable.get().client.createUser(thriftUser);
+		ThriftUserServiceClient thriftUserServiceClient = clientPool.borrow();
+		try {
+			return thriftUserServiceClient.client.createUser(thriftUser);
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(thriftUserServiceClient);
 		}
 	}
 
 	@Override
 	public User getUser(long id) {
 
-		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
+		ThriftUserServiceClient thriftUserServiceClient = clientPool.borrow();
+		try {
 
-			benchmark.rpc.thrift.User thriftUser = poolable.get().client.getUser(id);
+			benchmark.rpc.thrift.User thriftUser = thriftUserServiceClient.client.getUser(id);
 			User user = Converter.toRaw(thriftUser);
 
 			return user;
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(thriftUserServiceClient);
 		}
 	}
 
 	@Override
 	public Page<User> listUser(int pageNo) {
 
-		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
+		ThriftUserServiceClient thriftUserServiceClient = clientPool.borrow();
+		try {
 
-			UserPage userPage = poolable.get().client.listUser(pageNo);
+			UserPage userPage = thriftUserServiceClient.client.listUser(pageNo);
 			Page<User> page = new Page<>();
 
 			page.setPageNo(userPage.getPageNo());
@@ -84,6 +93,8 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 			return page;
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
+		} finally {
+			clientPool.release(thriftUserServiceClient);
 		}
 
 	}

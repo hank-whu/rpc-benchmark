@@ -1,0 +1,25 @@
+package benchmark.pool;
+
+import java.util.concurrent.locks.LockSupport;
+
+public final class WaitStrategy {
+
+	public final int idle(final int idleCounter) {
+
+		final int idled = idleCounter + 1;
+
+		if (idleCounter < 10) {
+			return idled;
+		}
+
+		if (idleCounter < 10 + 100) {
+			Thread.yield();
+			return idled;
+		}
+
+		LockSupport.parkNanos(1L);
+
+		return idled;
+	}
+
+}

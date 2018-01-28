@@ -21,7 +21,6 @@
 		<version.kryo>4.0.1</version.kryo>
 		<version.protostuff>1.6.0</version.protostuff>
 		<version.jsr250>1.0</version.jsr250>
-		<version.stormpot>2.4.1</version.stormpot>
 	</properties>
 
 	<dependencies>
@@ -85,11 +84,7 @@
 			<artifactId>jsr250-api</artifactId>
 			<version>${version.jsr250}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.chrisvest</groupId>
-			<artifactId>stormpot</artifactId>
-			<version>${version.stormpot}</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
