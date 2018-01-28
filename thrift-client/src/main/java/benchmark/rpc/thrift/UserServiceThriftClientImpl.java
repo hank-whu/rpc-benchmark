@@ -7,7 +7,7 @@ import java.util.List;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
-import benchmark.pool.LockObjectPool;
+import benchmark.pool.ViberObjectPool;
 import benchmark.service.UserServiceServerImpl;
 
 public class UserServiceThriftClientImpl implements benchmark.service.UserService, Closeable {
@@ -17,8 +17,8 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 
 	private static final int NCPU = Runtime.getRuntime().availableProcessors();
 
-	private final LockObjectPool<ThriftUserServiceClient> clientPool = //
-			new LockObjectPool<>(NCPU, () -> new ThriftUserServiceClient(host, port));
+	private final ViberObjectPool<ThriftUserServiceClient> clientPool = //
+			new ViberObjectPool<>(NCPU, () -> new ThriftUserServiceClient(host, port));
 
 	@Override
 	public void close() throws IOException {
