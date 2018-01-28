@@ -5,16 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TFramedTransport;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
-
 import benchmark.bean.Page;
 import benchmark.bean.User;
+import benchmark.pool.BlazeObjectPool;
+import benchmark.pool.PoolableObject;
 import benchmark.service.UserServiceServerImpl;
 
 public class UserServiceThriftClientImpl implements benchmark.service.UserService, Closeable {
@@ -22,33 +16,21 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	private final String host = "benchmark-server";
 	private final int port = 8080;
 
-	// not thread safe
-	private final TTransport transport = new TFramedTransport(new TSocket(host, port));
-	private final TProtocol protocol = new TBinaryProtocol(transport);
-	private final UserService.Client client = new UserService.Client(protocol);
+	private static final int NCPU = Runtime.getRuntime().availableProcessors();
 
-	public UserServiceThriftClientImpl() {
-		try {
-			transport.open();
-		} catch (TTransportException e) {
-			throw new RuntimeException(e);
-		}
-	}
+	private final BlazeObjectPool<ThriftUserServiceClient> clientPool = //
+			new BlazeObjectPool<>(NCPU * 2, () -> new ThriftUserServiceClient(host, port));
 
 	@Override
 	public void close() throws IOException {
-		try {
-			transport.close();
-		} catch (Throwable e) {
-			throw new IOException(e);
-		}
+		clientPool.close();
 	}
 
 	@Override
 	public boolean existUser(String email) {
-		try {
-			return client.userExist(email);
-		} catch (TException e) {
+		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
+			return poolable.get().client.userExist(email);
+		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -57,9 +39,9 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	public boolean createUser(User user) {
 		benchmark.rpc.thrift.User thriftUser = Converter.toThrift(user);
 
-		try {
-			return client.createUser(thriftUser);
-		} catch (TException e) {
+		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
+			return poolable.get().client.createUser(thriftUser);
+		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -67,12 +49,13 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	@Override
 	public User getUser(long id) {
 
-		try {
-			benchmark.rpc.thrift.User thriftUser = client.getUser(id);
+		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
+
+			benchmark.rpc.thrift.User thriftUser = poolable.get().client.getUser(id);
 			User user = Converter.toRaw(thriftUser);
 
 			return user;
-		} catch (TException e) {
+		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -80,9 +63,9 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	@Override
 	public Page<User> listUser(int pageNo) {
 
-		try {
-			UserPage userPage = client.listUser(pageNo);
+		try (PoolableObject<ThriftUserServiceClient> poolable = clientPool.claim()) {
 
+			UserPage userPage = poolable.get().client.listUser(pageNo);
 			Page<User> page = new Page<>();
 
 			page.setPageNo(userPage.getPageNo());
@@ -99,7 +82,7 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 			page.setResult(userList);
 
 			return page;
-		} catch (TException e) {
+		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
 

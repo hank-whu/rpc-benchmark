@@ -19,11 +19,10 @@ import benchmark.bean.User;
 import benchmark.rpc.thrift.UserServiceThriftClientImpl;
 import benchmark.service.UserService;
 
-@State(Scope.Thread)
+@State(Scope.Benchmark)
 public class Client extends AbstractClient {
 	public static final int CONCURRENCY = 32;
 
-	// not thread safe
 	private final UserServiceThriftClientImpl userService = new UserServiceThriftClientImpl();
 
 	@Override
