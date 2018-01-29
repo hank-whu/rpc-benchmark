@@ -15,13 +15,13 @@
 		maxClientConnection="16" minClientConnection="16" />
 
 	<!-- 通用referer基础配置 -->
-	<motan:basicReferer requestTimeout="2000" accessLog="false"
+	<motan:basicReferer requestTimeout="5000" accessLog="false"
 		retries="1" group="motan-benchmark-rpc" module="motan-benchmark-rpc"
 		application="myMotanBenchmark" protocol="motan" registry="localRegistry"
 		id="motanClientBasicConfig" throwException="false" check="false" />
 
 	<!-- 具体referer配置。使用方通过beanid使用服务接口类 -->
 	<motan:referer id="userService" directUrl="benchmark-server:8080"
-		interface="benchmark.service.UserService" connectTimeout="2000"
-		requestTimeout="2000" basicReferer="motanClientBasicConfig" />
+		interface="benchmark.service.UserService" connectTimeout="5000"
+		requestTimeout="5000" basicReferer="motanClientBasicConfig" />
 </beans>
