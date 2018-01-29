@@ -85,7 +85,16 @@ public class Client extends AbstractClient {
 
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();
-		System.out.println(client.getUser().getAddress());
+
+		for (int i = 0; i < 60; i++) {
+			try {
+				System.out.println(client.getUser().getAddress());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Thread.sleep(1000);
+			}
+		}
+
 		client.close();
 
 		Options opt = new OptionsBuilder()//
