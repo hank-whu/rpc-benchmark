@@ -30,7 +30,6 @@ object benchmark {
 		installBenchmarkBase()
 
 		val allTasks = getAllTasks()
-			.filterNot(_ == "motan")
 			.filterNot(_ == "tars")
 
 		println("找到以下benchmark项目:")
