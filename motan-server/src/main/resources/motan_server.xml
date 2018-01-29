@@ -6,7 +6,7 @@
 
 
 	<!-- 业务具体实现类 -->
-	<bean id="userServiceImpl" class="benchmark.service.UserServiceServerImpl" />
+	<bean id="userServiceImpl" class="benchmark.service.MotanUserServiceServerImpl" />
 
 	<!-- 注册中心配置 使用不同注册中心需要依赖对应的jar包。如果不使用注册中心，可以把check属性改为false，忽略注册失败。 -->
 	<motan:registry regProtocol="local" name="localRegistry"
@@ -14,8 +14,8 @@
 
 	<!-- 协议配置。为防止多个业务配置冲突，推荐使用id表示具体协议。 -->
 	<motan:protocol id="benchmarkMotan" default="true" name="motan"
-		serialization="hprose" requestTimeout="5000" maxServerConnection="100000"
-		maxContentLength="1048576" maxWorkerThread="128" minWorkerThread="8" />
+		requestTimeout="5000" maxServerConnection="100000" maxContentLength="1048576"
+		maxWorkerThread="800" minWorkerThread="20" />
 
 	<!-- 通用配置，多个rpc服务使用相同的基础配置. group和module定义具体的服务池。export格式为“protocol id:提供服务的端口” -->
 	<motan:basicService requestTimeout="5000"
@@ -24,7 +24,7 @@
 		application="myMotanBenchmark" registry="localRegistry" id="serviceBasicConfig" />
 
 	<!-- 具体rpc服务配置，声明实现的接口类。需要根据业务情况设置合适的超时时间 -->
-	<motan:service interface="benchmark.service.UserService"
+	<motan:service interface="benchmark.service.MotanUserService"
 		ref="userServiceImpl" export="benchmarkMotan:8080" basicService="serviceBasicConfig"
 		requestTimeout="5000">
 	</motan:service>
