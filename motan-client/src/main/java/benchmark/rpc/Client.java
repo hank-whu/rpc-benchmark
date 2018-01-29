@@ -89,6 +89,7 @@ public class Client extends AbstractClient {
 		for (int i = 0; i < 60; i++) {
 			try {
 				System.out.println(client.getUser().getAddress());
+				break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				Thread.sleep(1000);
