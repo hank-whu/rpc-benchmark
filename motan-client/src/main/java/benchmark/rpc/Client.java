@@ -2,7 +2,6 @@ package benchmark.rpc;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -19,25 +18,26 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.weibo.api.motan.closable.ShutDownHook;
 import com.weibo.api.motan.util.StatsUtil;
 
-import benchmark.bean.MotanUser;
 import benchmark.bean.Page;
-import benchmark.service.MotanUserService;
-import benchmark.service.MotanUserServiceServerImpl;
+import benchmark.bean.User;
+import benchmark.service.UserService;
 
 @State(Scope.Benchmark)
-public class Client {
+public class Client extends AbstractClient {
 	public static final int CONCURRENCY = 32;
 
-	private final AtomicInteger counter = new AtomicInteger(0);
-	private final MotanUserService _serviceUserService = new MotanUserServiceServerImpl();
-
 	private final ClassPathXmlApplicationContext context;
-	private final MotanUserService userService;
+	private final UserService userService;
 
 	public Client() {
 		context = new ClassPathXmlApplicationContext("motan_client.xml");
 		context.start();
-		userService = (MotanUserService) context.getBean("userService"); // 获取远程服务代理
+		userService = (UserService) context.getBean("userService"); // 获取远程服务代理
+	}
+
+	@Override
+	protected UserService getUserService() {
+		return userService;
 	}
 
 	@TearDown
@@ -54,34 +54,33 @@ public class Client {
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
+	@Override
 	public boolean existUser() throws Exception {
-		String email = String.valueOf(counter.getAndIncrement());
-		return userService.existUser(email);
+		return super.existUser();
 	}
 
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
+	@Override
 	public boolean createUser() throws Exception {
-		int id = counter.getAndIncrement();
-		MotanUser user = _serviceUserService.getUser(id);
-		return userService.createUser(user);
+		return super.createUser();
 	}
 
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	public MotanUser getUser() throws Exception {
-		int id = counter.getAndIncrement();
-		return userService.getUser(id);
+	@Override
+	public User getUser() throws Exception {
+		return super.getUser();
 	}
 
 	@Benchmark
 	@BenchmarkMode({ Mode.Throughput, Mode.AverageTime, Mode.SampleTime })
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
-	public Page<MotanUser> listUser() throws Exception {
-		int pageNo = counter.getAndIncrement();
-		return userService.listUser(pageNo);
+	@Override
+	public Page<User> listUser() throws Exception {
+		return super.listUser();
 	}
 
 	public static void main(String[] args) throws Exception {

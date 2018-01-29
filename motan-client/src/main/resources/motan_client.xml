@@ -10,8 +10,9 @@
 		check="false" />
 
 	<!-- motan协议配置 -->
-	<motan:protocol default="true" name="motan" haStrategy="failfast"
-		loadbalance="roundrobin" maxClientConnection="10" minClientConnection="2" />
+	<motan:protocol default="true" name="motan"
+		serialization="hprose" haStrategy="failfast" loadbalance="roundrobin"
+		maxClientConnection="16" minClientConnection="16" />
 
 	<!-- 通用referer基础配置 -->
 	<motan:basicReferer requestTimeout="5000" accessLog="false"
@@ -21,6 +22,6 @@
 
 	<!-- 具体referer配置。使用方通过beanid使用服务接口类 -->
 	<motan:referer id="userService" directUrl="benchmark-server:8080"
-		interface="benchmark.service.MotanUserService" connectTimeout="5000"
+		interface="benchmark.service.UserService" connectTimeout="5000"
 		requestTimeout="5000" basicReferer="motanClientBasicConfig" />
 </beans>
