@@ -18,7 +18,7 @@
 		maxContentLength="1048576" maxWorkerThread="128" minWorkerThread="8" />
 
 	<!-- 通用配置，多个rpc服务使用相同的基础配置. group和module定义具体的服务池。export格式为“protocol id:提供服务的端口” -->
-	<motan:basicService requestTimeout="1000"
+	<motan:basicService requestTimeout="1000" host="benchmar-server"
 		export="benchmarkMotan:8080" group="motan-benchmark-rpc" accessLog="false"
 		shareChannel="true" module="motan-benchmark-rpc" application="myMotanBenchmark"
 		registry="localRegistry" id="serviceBasicConfig" />
