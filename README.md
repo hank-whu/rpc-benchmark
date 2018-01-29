@@ -6,6 +6,12 @@
  - 所有框架都尽量参考该项目自带的Benchmark实现.
  - 将会一直持续, 不定期发布测试结果.
 
+# 测试用例
+ 1. boolean existUser(String email), 判断某个 email 是否存在.
+ 2. boolean createUser(User user), 添加一个 User.
+ 3. User getUser(long id), 根据 id 获取一个用户.
+ 4. Page<User> listUser(int pageNo), 获取用户列表.
+
 # 运行说明
 1. 需要两台机器，一台作为客户端，一台作为服务端.
 2. 系统要求为 linux x64, 至少 4GB ram.
