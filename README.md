@@ -1,4 +1,7 @@
 # RPC Benchmark
+几乎所有的 RPC 框架都宣称自己是“高性能”的, 那么实际结果到底如何呢, 让我们来做一个性能测试吧.
+
+## 测试说明
  - 仅限于Java.
  - 客户端使用JMH进行压测, 32 线程, 10 次预热, 3 次运行.
  - 每次运行前都会执行 ***killall java***, 但没有在每轮测试时重启操作系统.
@@ -6,13 +9,13 @@
  - 所有框架都尽量参考该项目自带的Benchmark实现.
  - 将会一直持续, 不定期发布测试结果.
 
-# 测试用例
+## 测试用例
  1. boolean existUser(String email), 判断某个 email 是否存在.
  2. boolean createUser(User user), 添加一个 User.
  3. User getUser(long id), 根据 id 获取一个用户.
  4. Page<User> listUser(int pageNo), 获取用户列表.
 
-# 运行说明
+## 运行说明
 1. 需要两台机器，一台作为客户端，一台作为服务端.
 2. 系统要求为 linux x64, 至少 4GB ram.
 3. 客户端需要安装 git, jdk 9, scala 12, maven 3.
@@ -29,7 +32,7 @@
 > cd rpc-benchmark<br>
 > scala benchmark.scala
 
-# 免责声明
+## 免责声明
  - 能力所限错误在所难免, 本测试用例及测试结果仅供参考.
  - 如果你认为xx框架的代码或配置存在问题，那么欢迎发起Pull Request.
  - 利益相关: 本测试用例作者同时为 [turbo](https://github.com/hank-whu/turbo-rpc), [undertow-async](https://github.com/hank-whu/undertow-async) 的作者.
