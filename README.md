@@ -39,3 +39,7 @@
  - 能力所限错误在所难免, 本测试用例及测试结果仅供参考.
  - 如果你认为xx框架的代码或配置存在问题，那么欢迎发起Pull Request.
  - 利益相关: 本测试用例作者同时为 [turbo](https://github.com/hank-whu/turbo-rpc), [undertow-async](https://github.com/hank-whu/undertow-async) 的作者.
+
+## 关注微信公众号: rpcBenchmark
+![rpcBenchmark][1]
+[1]: https://github.com/hank-whu/rpc-benchmark/raw/master/rpcBenchmark.jpg
