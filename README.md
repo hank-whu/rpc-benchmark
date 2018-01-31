@@ -41,5 +41,4 @@
  - 利益相关: 本测试用例作者同时为 [turbo](https://github.com/hank-whu/turbo-rpc), [undertow-async](https://github.com/hank-whu/undertow-async) 的作者.
 
 ## 关注微信公众号: rpcBenchmark
-![rpcBenchmark][1]
-[1]: https://github.com/hank-whu/rpc-benchmark/raw/master/rpcBenchmark.jpg
+![rpcBenchmark](https://github.com/hank-whu/rpc-benchmark/raw/master/rpcBenchmark.jpg)
