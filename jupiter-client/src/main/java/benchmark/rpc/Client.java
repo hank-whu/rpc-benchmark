@@ -4,7 +4,17 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jupiter.common.util.SystemPropertyUtil;
+import org.jupiter.rpc.DefaultClient;
+import org.jupiter.rpc.JClient;
+import org.jupiter.rpc.consumer.ProxyFactory;
+import org.jupiter.rpc.load.balance.LoadBalancerType;
+import org.jupiter.serialization.SerializerType;
 import org.jupiter.spring.support.JupiterSpringClient;
+import org.jupiter.transport.JConfig;
+import org.jupiter.transport.JOption;
+import org.jupiter.transport.UnresolvedAddress;
+import org.jupiter.transport.netty.JNettyTcpConnector;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -30,18 +40,38 @@ public class Client {
 	private final AtomicInteger counter = new AtomicInteger(0);
 	private final UserService _serviceUserService = new UserServiceServerImpl();
 
-	private final ClassPathXmlApplicationContext context;
+//	private final ClassPathXmlApplicationContext context;
 	private final JupiterUserService userService;
+	private final JClient client;
 
 	public Client() {
-		context = new ClassPathXmlApplicationContext("classpath:spring-consumer.xml");
-		userService = context.getBean(JupiterUserService.class);
+//		context = new ClassPathXmlApplicationContext("classpath:spring-consumer.xml");
+//		userService = context.getBean(JupiterUserService.class);
+		SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
+		client = new DefaultClient().withConnector(new JNettyTcpConnector(true));
+		JConfig config = client.connector().config();
+		config.setOption(JOption.WRITE_BUFFER_HIGH_WATER_MARK, 2048 * 1024);
+		config.setOption(JOption.WRITE_BUFFER_LOW_WATER_MARK, 1024 * 1024);
+		config.setOption(JOption.SO_RCVBUF, 256 * 1024);
+		config.setOption(JOption.SO_SNDBUF, 256 * 1024);
+
+		UnresolvedAddress[] addresses = new UnresolvedAddress[4];
+		for (int i = 0; i < addresses.length; i++) {
+			addresses[i] = new UnresolvedAddress("benchmark-server", 18090);
+			client.connector().connect(addresses[i]);
+		}
+
+		userService = ProxyFactory.factory(JupiterUserService.class)
+				.client(client)
+				.addProviderAddress(addresses)
+				.newProxyInstance();
 	}
 
 	@TearDown
 	public void close() throws IOException {
-		context.getBean(JupiterSpringClient.class).getClient().shutdownGracefully();
-		context.close();
+//		context.getBean(JupiterSpringClient.class).getClient().shutdownGracefully();
+//		context.close();
+		client.shutdownGracefully();
 	}
 
 	@Benchmark
@@ -80,9 +110,9 @@ public class Client {
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();
 		System.out.println(client.getUser());
-		client.context.getBeansOfType(Object.class).forEach((key, value) -> {
-			System.out.println(value.getClass());
-		});
+//		client.context.getBeansOfType(Object.class).forEach((key, value) -> {
+//			System.out.println(value.getClass());
+//		});
 		client.close();
 
 		Options opt = new OptionsBuilder()//
