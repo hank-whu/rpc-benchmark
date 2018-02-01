@@ -12,6 +12,9 @@ import org.jupiter.rpc.load.balance.LoadBalancerType;
 import org.jupiter.serialization.SerializerType;
 import org.jupiter.spring.support.JupiterSpringClient;
 import org.jupiter.transport.*;
+import org.jupiter.transport.JConfig;
+import org.jupiter.transport.JOption;
+import org.jupiter.transport.UnresolvedAddress;
 import org.jupiter.transport.netty.JNettyTcpConnector;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -23,7 +26,6 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
@@ -46,6 +48,7 @@ public class Client {
 //		context = new ClassPathXmlApplicationContext("classpath:spring-consumer.xml");
 //		userService = context.getBean(JupiterUserService.class);
 		SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
+		SystemPropertyUtil.setProperty("jupiter.io.decoder.composite.buf", "true");
 		client = new DefaultClient().withConnector(new JNettyTcpConnector(true));
 		JConfig config = client.connector().config();
 		config.setOption(JOption.WRITE_BUFFER_HIGH_WATER_MARK, 2048 * 1024);
