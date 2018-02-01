@@ -12,6 +12,9 @@ import org.jupiter.rpc.load.balance.LoadBalancerType;
 import org.jupiter.serialization.SerializerType;
 import org.jupiter.spring.support.JupiterSpringClient;
 import org.jupiter.transport.*;
+import org.jupiter.transport.JConfig;
+import org.jupiter.transport.JOption;
+import org.jupiter.transport.UnresolvedAddress;
 import org.jupiter.transport.netty.JNettyTcpConnector;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -23,7 +26,6 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
@@ -38,13 +40,10 @@ public class Client {
 	private final AtomicInteger counter = new AtomicInteger(0);
 	private final UserService _serviceUserService = new UserServiceServerImpl();
 
-//	private final ClassPathXmlApplicationContext context;
 	private final JupiterUserService userService;
 	private final JClient client;
 
 	public Client() {
-//		context = new ClassPathXmlApplicationContext("classpath:spring-consumer.xml");
-//		userService = context.getBean(JupiterUserService.class);
 		SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
 		client = new DefaultClient().withConnector(new JNettyTcpConnector(true));
 		JConfig config = client.connector().config();
@@ -61,16 +60,12 @@ public class Client {
 			connector.connectionManager().manage(connection);
 		}
 
-		userService = ProxyFactory.factory(JupiterUserService.class)
-				.client(client)
-				.addProviderAddress(addresses)
+		userService = ProxyFactory.factory(JupiterUserService.class).client(client).addProviderAddress(addresses)
 				.newProxyInstance();
 	}
 
 	@TearDown
 	public void close() throws IOException {
-//		context.getBean(JupiterSpringClient.class).getClient().shutdownGracefully();
-//		context.close();
 		client.shutdownGracefully();
 	}
 
@@ -110,9 +105,6 @@ public class Client {
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();
 		System.out.println(client.getUser());
-//		client.context.getBeansOfType(Object.class).forEach((key, value) -> {
-//			System.out.println(value.getClass());
-//		});
 		client.close();
 
 		Options opt = new OptionsBuilder()//
