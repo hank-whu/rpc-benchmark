@@ -8,6 +8,10 @@ import org.jupiter.common.util.SystemPropertyUtil;
 import org.jupiter.rpc.DefaultClient;
 import org.jupiter.rpc.JClient;
 import org.jupiter.rpc.consumer.ProxyFactory;
+import org.jupiter.rpc.load.balance.LoadBalancerType;
+import org.jupiter.serialization.SerializerType;
+import org.jupiter.spring.support.JupiterSpringClient;
+import org.jupiter.transport.*;
 import org.jupiter.transport.JConfig;
 import org.jupiter.transport.JOption;
 import org.jupiter.transport.UnresolvedAddress;
@@ -41,6 +45,7 @@ public class Client {
 
 	public Client() {
 		SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
+		SystemPropertyUtil.setProperty("jupiter.io.decoder.composite.buf", "true");
 		client = new DefaultClient().withConnector(new JNettyTcpConnector(true));
 		JConfig config = client.connector().config();
 		config.setOption(JOption.WRITE_BUFFER_HIGH_WATER_MARK, 2048 * 1024);
@@ -49,9 +54,11 @@ public class Client {
 		config.setOption(JOption.SO_SNDBUF, 256 * 1024);
 
 		UnresolvedAddress[] addresses = new UnresolvedAddress[4];
+		JConnector<JConnection> connector = client.connector();
 		for (int i = 0; i < addresses.length; i++) {
 			addresses[i] = new UnresolvedAddress("benchmark-server", 18090);
-			client.connector().connect(addresses[i]);
+			JConnection connection = connector.connect(addresses[i]);
+			connector.connectionManager().manage(connection);
 		}
 
 		userService = ProxyFactory.factory(JupiterUserService.class).client(client).addProviderAddress(addresses)
