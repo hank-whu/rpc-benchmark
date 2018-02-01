@@ -11,9 +11,7 @@ import org.jupiter.rpc.consumer.ProxyFactory;
 import org.jupiter.rpc.load.balance.LoadBalancerType;
 import org.jupiter.serialization.SerializerType;
 import org.jupiter.spring.support.JupiterSpringClient;
-import org.jupiter.transport.JConfig;
-import org.jupiter.transport.JOption;
-import org.jupiter.transport.UnresolvedAddress;
+import org.jupiter.transport.*;
 import org.jupiter.transport.netty.JNettyTcpConnector;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -56,9 +54,11 @@ public class Client {
 		config.setOption(JOption.SO_SNDBUF, 256 * 1024);
 
 		UnresolvedAddress[] addresses = new UnresolvedAddress[4];
+		JConnector<JConnection> connector = client.connector();
 		for (int i = 0; i < addresses.length; i++) {
 			addresses[i] = new UnresolvedAddress("benchmark-server", 18090);
-			client.connector().connect(addresses[i]);
+			JConnection connection = connector.connect(addresses[i]);
+			connector.connectionManager().manage(connection);
 		}
 
 		userService = ProxyFactory.factory(JupiterUserService.class)
