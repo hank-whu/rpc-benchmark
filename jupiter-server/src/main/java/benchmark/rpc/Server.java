@@ -11,22 +11,12 @@ import org.jupiter.transport.netty.JNettyTcpAcceptor;
 public class Server {
 
 	public static void main(String[] args) throws InterruptedException {
-//		new Thread(() -> SpringJupiterRegistryServer.main(args)).start();
-//
-//		Thread.sleep(1000);
-//
-//		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-provider.xml");) {
-//			context.start();
-//			System.out.println("Jupiter started");
-//			Thread.sleep(Integer.MAX_VALUE);
-//		}
 
 		try {
 			int processors = Runtime.getRuntime().availableProcessors();
-			SystemPropertyUtil
-					.setProperty("jupiter.executor.factory.provider.core.workers", String.valueOf(processors));
-			SystemPropertyUtil
-					.setProperty("jupiter.executor.factory.affinity.thread", "true");
+			SystemPropertyUtil.setProperty("jupiter.executor.factory.provider.core.workers",
+					String.valueOf(processors));
+			SystemPropertyUtil.setProperty("jupiter.executor.factory.affinity.thread", "true");
 			SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
 
 			JServer server = new DefaultServer().withAcceptor(new JNettyTcpAcceptor(18090, true));
@@ -36,13 +26,11 @@ public class Server {
 			config.setOption(JOption.SO_RCVBUF, 256 * 1024);
 			config.setOption(JOption.SO_SNDBUF, 256 * 1024);
 
-			server.serviceRegistry()
-					.provider(new JupiterUserServiceServerImpl())
-					.register();
+			server.serviceRegistry().provider(new JupiterUserServiceServerImpl()).register();
 
 			server.start(false);
 			System.out.println("Jupiter started");
-			Thread.sleep(Integer.MAX_VALUE);
+			Thread.sleep(java.lang.Integer.MAX_VALUE);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

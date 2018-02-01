@@ -40,13 +40,10 @@ public class Client {
 	private final AtomicInteger counter = new AtomicInteger(0);
 	private final UserService _serviceUserService = new UserServiceServerImpl();
 
-//	private final ClassPathXmlApplicationContext context;
 	private final JupiterUserService userService;
 	private final JClient client;
 
 	public Client() {
-//		context = new ClassPathXmlApplicationContext("classpath:spring-consumer.xml");
-//		userService = context.getBean(JupiterUserService.class);
 		SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
 		SystemPropertyUtil.setProperty("jupiter.io.decoder.composite.buf", "true");
 		client = new DefaultClient().withConnector(new JNettyTcpConnector(true));
@@ -64,16 +61,12 @@ public class Client {
 			connector.connectionManager().manage(connection);
 		}
 
-		userService = ProxyFactory.factory(JupiterUserService.class)
-				.client(client)
-				.addProviderAddress(addresses)
+		userService = ProxyFactory.factory(JupiterUserService.class).client(client).addProviderAddress(addresses)
 				.newProxyInstance();
 	}
 
 	@TearDown
 	public void close() throws IOException {
-//		context.getBean(JupiterSpringClient.class).getClient().shutdownGracefully();
-//		context.close();
 		client.shutdownGracefully();
 	}
 
@@ -113,9 +106,6 @@ public class Client {
 	public static void main(String[] args) throws Exception {
 		Client client = new Client();
 		System.out.println(client.getUser());
-//		client.context.getBeansOfType(Object.class).forEach((key, value) -> {
-//			System.out.println(value.getClass());
-//		});
 		client.close();
 
 		Options opt = new OptionsBuilder()//
