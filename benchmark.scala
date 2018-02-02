@@ -112,7 +112,7 @@ object benchmark {
 		println(s"stop $name")
 
 		//benchmark-server上启动服务器
-		exec("ssh benchmark@benchmark-server \"killall java\"")
+		exec(Array("ssh", "benchmark@benchmark-server", "killall java"))
 	}
 
 	def startClient(clientPackage : File) {
@@ -215,7 +215,7 @@ object benchmark {
 		reportOutput.write(s"\r\n".getBytes("UTF-8"))
 
 		val header = """| framework | thrpt (ops/ms) | avgt (ms) | p90 (ms) | p99 (ms) | p999 (ms) |
-				\| :-: | :-: | :-: | :-: | :-: | :-: |
+				\| :--- | :---: | :---: | :---: | :---: | :---: |
 				\""".stripMargin('\\')
 
 		resultFolder
