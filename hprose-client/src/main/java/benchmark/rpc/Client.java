@@ -69,6 +69,8 @@ public class Client extends AbstractClient {
 	}
 
 	public static void main(String[] args) throws Exception {
+		client.setFullDuplex(true);
+		client.setNoDelay(true);
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
 				.warmupIterations(10)//
