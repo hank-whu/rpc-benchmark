@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  * @param <T>
  */
 @SuppressWarnings("unchecked")
-public class BlazeObjectPool<T> implements Closeable {
+public class ConcurrentObjectPool<T> implements Closeable {
 
 	private static final int ABASE;
 	private static final int ASHIFT;
@@ -32,7 +32,7 @@ public class BlazeObjectPool<T> implements Closeable {
 
 	private volatile boolean isClosing = false;
 
-	public BlazeObjectPool(int poolSize, Supplier<T> producer) {
+	public ConcurrentObjectPool(int poolSize, Supplier<T> producer) {
 		this.size = poolSize;
 		this.closeList = new Object[poolSize];
 		this.array = new Object[poolSize];
