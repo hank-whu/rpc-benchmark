@@ -4,6 +4,7 @@ import static benchmark.pool.UnsafeUtils.unsafe;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -15,31 +16,27 @@ import java.util.function.Supplier;
 @SuppressWarnings("unchecked")
 public class BlazeObjectPool<T> implements Closeable {
 
-	private static final long IDX;
 	private static final int ABASE;
 	private static final int ASHIFT;
+
 	private static final Object BORROWED = new Object();
 	private static final WaitStrategy WAIT_STRATEGY = new WaitStrategy();
 
-	private final int poolSize;
+	private final int size;
 
 	volatile long p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17;
-	private volatile int idx;
-
-	volatile long q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17;
 	private final Object[] array;
 
 	private final Object[] closeList;
-	volatile long r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17;
+	volatile long q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17;
 
 	private volatile boolean isClosing = false;
 
 	public BlazeObjectPool(int poolSize, Supplier<T> producer) {
-		this.poolSize = poolSize;
-		idx = poolSize - 1;
+		this.size = poolSize;
+		this.closeList = new Object[poolSize];
+		this.array = new Object[poolSize];
 
-		closeList = new Object[poolSize];
-		array = new Object[poolSize];
 		for (int i = 0; i < poolSize; i++) {
 			T t = producer.get();
 
@@ -49,32 +46,27 @@ public class BlazeObjectPool<T> implements Closeable {
 	}
 
 	public T borrow() {
+		if (isClosing) {
+			return null;
+		}
+
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			int random = ThreadLocalRandom.current().nextInt(size);
 
-			if (isClosing) {
-				return null;
+			for (int j = 0; j < size; j++) {
+				long offset = offset((random + j) % size);
+
+				Object obj = unsafe().getObjectVolatile(array, offset);
+
+				if (obj != BORROWED) {
+					if (unsafe().compareAndSwapObject(array, offset, obj, BORROWED)) {
+						return (T) obj;
+					} else {
+						break;
+					}
+				}
 			}
 
-			if (idx < 0) {
-				WAIT_STRATEGY.idle(i);
-				continue;
-			}
-
-			int index = unsafe().getAndAddInt(this, IDX, -1);
-
-			if (index < 0) {
-				unsafe().getAndAddInt(this, IDX, 1);
-				WAIT_STRATEGY.idle(i);
-				continue;
-			}
-
-			Object obj = unsafe().getAndSetObject(array, offset(index), BORROWED);
-
-			if (obj != BORROWED) {
-				return (T) obj;
-			}
-
-			unsafe().getAndAddInt(this, IDX, 1);
 			WAIT_STRATEGY.idle(i);
 		}
 
@@ -87,30 +79,22 @@ public class BlazeObjectPool<T> implements Closeable {
 		}
 
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			if (isClosing) {
-				return;
+			int random = ThreadLocalRandom.current().nextInt(size);
+
+			for (int j = 0; j < size; j++) {
+				long offset = offset((random + j) % size);
+
+				Object obj = unsafe().getObjectVolatile(array, offset);
+
+				if (obj == BORROWED) {
+					if (unsafe().compareAndSwapObject(array, offset, obj, t)) {
+						return;
+					} else {
+						break;
+					}
+				}
 			}
 
-			if (idx < -1 || idx > poolSize - 2) {
-				WAIT_STRATEGY.idle(i);
-				continue;
-			}
-
-			int index = unsafe().getAndAddInt(this, IDX, 1) + 1;
-
-			if (index < 0 || index >= poolSize) {
-				unsafe().getAndAddInt(this, IDX, -1);
-				WAIT_STRATEGY.idle(i);
-				continue;
-			}
-
-			boolean success = unsafe().compareAndSwapObject(array, offset(index), BORROWED, t);
-
-			if (success) {
-				return;
-			}
-
-			unsafe().getAndAddInt(this, IDX, -1);
 			WAIT_STRATEGY.idle(i);
 		}
 	}
@@ -120,7 +104,7 @@ public class BlazeObjectPool<T> implements Closeable {
 		isClosing = true;
 
 		for (int i = 0; i < 1000; i++) {
-			if (idx == poolSize - 1) {
+			if (unsafe().getObjectVolatile(array, offset(size - 1)) != BORROWED) {
 				break;
 			}
 
@@ -142,7 +126,6 @@ public class BlazeObjectPool<T> implements Closeable {
 				}
 			}
 		}
-
 	}
 
 	private static final long offset(int key) {
@@ -151,8 +134,6 @@ public class BlazeObjectPool<T> implements Closeable {
 
 	static {
 		try {
-			IDX = unsafe().objectFieldOffset(BlazeObjectPool.class.getDeclaredField("idx"));
-
 			ABASE = unsafe().arrayBaseOffset(Object[].class);
 
 			int scale = unsafe().arrayIndexScale(Object[].class);
