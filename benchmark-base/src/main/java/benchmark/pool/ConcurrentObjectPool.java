@@ -97,6 +97,8 @@ public class ConcurrentObjectPool<T> implements Closeable {
 
 			WAIT_STRATEGY.idle(i);
 		}
+
+		throw new RuntimeException("恭喜你中大奖了，这种低概率事件都能发生，真是令人惊诧");
 	}
 
 	@Override
