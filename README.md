@@ -37,6 +37,7 @@
 
 ## 开发者必读
 1. cd benchmark-base && mvn install 
+2. 配置好 hosts: benchmark-client benchmark-server
 3. 修改或者实现 xxx-server xxx-client
 4. 启动 Server, 然后启动 Client, 确保能不出错跑完所有测试项目
 5. 提交 Pull Request
