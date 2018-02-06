@@ -106,7 +106,14 @@ public class ConcurrentObjectPool<T> implements Closeable {
 		isClosing = true;
 
 		for (int i = 0; i < 1000; i++) {
-			if (unsafe().getObjectVolatile(array, offset(size - 1)) != BORROWED) {
+			int count = 0;
+			for (int j = 0; j < size; j++) {
+				if (unsafe().getObjectVolatile(array, offset(j)) != BORROWED) {
+					count++;
+				}
+			}
+
+			if (count == size) {
 				break;
 			}
 
