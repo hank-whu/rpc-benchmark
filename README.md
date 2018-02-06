@@ -35,6 +35,12 @@
 > cd rpc-benchmark<br>
 > scala benchmark.scala
 
+## 开发者必读
+1. cd benchmark-base && mvn install 
+3. 修改或者实现 xxx-server xxx-client
+4. 启动 Server, 然后启动 Client, 确保能不出错跑完所有测试项目
+5. 提交 Pull Request
+
 ## 免责声明
  - 能力所限错误在所难免, 本测试用例及测试结果仅供参考.
  - 如果你认为xx框架的代码或配置存在问题，那么欢迎发起Pull Request.
