@@ -23,12 +23,22 @@ import hprose.client.HproseTcpClient;
 public class Client extends AbstractClient {
 	public static final int CONCURRENCY = 32;
 
-	private static final HproseTcpClient client = new HproseTcpClient("tcp://benchmark-server:8080");
-	private static final UserService userService = client.useService(UserService.class);
+	private final HproseTcpClient client = new HproseTcpClient("tcp://benchmark-server:8080");
+	private final UserService userService = client.useService(UserService.class);
 
+	public Client() {
+		client.setFullDuplex(true);
+		client.setNoDelay(true);
+	}
+	
 	@Override
 	protected UserService getUserService() {
 		return userService;
+	}
+
+	@TearDown
+	public void close() throws IOException {
+		client.close();
 	}
 
 	@Benchmark
@@ -64,8 +74,6 @@ public class Client extends AbstractClient {
 	}
 
 	public static void main(String[] args) throws Exception {
-		client.setFullDuplex(true);
-		client.setNoDelay(true);
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
 				.warmupIterations(10)//
@@ -75,7 +83,6 @@ public class Client extends AbstractClient {
 				.build();
 
 		new Runner(opt).run();
-		client.close();
 //		HproseTcpClient client = new HproseTcpClient("tcp://127.0.0.1:8080");
 //		UserService userService = client.useService(UserService.class);
 //		System.out.println(userService.existUser("1"));
