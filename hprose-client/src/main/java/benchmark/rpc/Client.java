@@ -26,6 +26,11 @@ public class Client extends AbstractClient {
 	private final HproseTcpClient client = new HproseTcpClient("tcp://benchmark-server:8080");
 	private final UserService userService = client.useService(UserService.class);
 
+	public Client() {
+		client.setFullDuplex(true);
+		client.setNoDelay(true);
+	}
+	
 	@Override
 	protected UserService getUserService() {
 		return userService;
@@ -78,7 +83,6 @@ public class Client extends AbstractClient {
 				.build();
 
 		new Runner(opt).run();
-		
 //		HproseTcpClient client = new HproseTcpClient("tcp://127.0.0.1:8080");
 //		UserService userService = client.useService(UserService.class);
 //		System.out.println(userService.existUser("1"));
