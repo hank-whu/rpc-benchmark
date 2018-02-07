@@ -12,7 +12,7 @@ public final class WaitStrategy {
 			return idled;
 		}
 
-		if (idleCounter < 10 + 100) {
+		if (idleCounter < 10 + 10) {
 			Thread.yield();
 			return idled;
 		}

@@ -5,7 +5,6 @@ import static benchmark.pool.UnsafeUtils.unsafe;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -16,10 +15,11 @@ import java.util.function.Supplier;
 @SuppressWarnings("unchecked")
 public class ConcurrentObjectPool<T> implements Closeable {
 
+	private static final long EXCHANGE;
 	private static final int ABASE;
 	private static final int ASHIFT;
 
-	private static final Object BORROWED = new Object();
+	private static final Object EMPTY = new Object();
 	private static final WaitStrategy WAIT_STRATEGY = new WaitStrategy();
 
 	private final int size;
@@ -30,7 +30,8 @@ public class ConcurrentObjectPool<T> implements Closeable {
 	private final Object[] closeList;
 	volatile long q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17;
 
-	private volatile boolean isClosing = false;
+	private volatile Object exchange = EMPTY;
+	volatile long r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17;
 
 	public ConcurrentObjectPool(int poolSize, Supplier<T> producer) {
 		this.size = poolSize;
@@ -46,8 +47,9 @@ public class ConcurrentObjectPool<T> implements Closeable {
 	}
 
 	public T borrow() {
-		if (isClosing) {
-			return null;
+		T fast = exchange();
+		if (fast != null) {// 抢到了
+			return fast;
 		}
 
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
@@ -55,11 +57,10 @@ public class ConcurrentObjectPool<T> implements Closeable {
 
 			for (int j = 0; j < size; j++) {
 				long offset = offset((random + j) % size);
-
 				Object obj = unsafe().getObjectVolatile(array, offset);
 
-				if (obj != BORROWED) {
-					if (unsafe().compareAndSwapObject(array, offset, obj, BORROWED)) {
+				if (obj != EMPTY) {
+					if (unsafe().compareAndSwapObject(array, offset, obj, EMPTY)) {
 						return (T) obj;
 					} else {
 						break;
@@ -73,57 +74,68 @@ public class ConcurrentObjectPool<T> implements Closeable {
 		return null;
 	}
 
-	public void release(T t) {
+	public void release(final T t) {
 		if (t == null) {
 			return;
 		}
 
+		final boolean exchanged = exchange(t);
+
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+
 			int random = ThreadLocalRandom.current().nextInt(size);
 
 			for (int j = 0; j < size; j++) {
-				long offset = offset((random + j) % size);
+				if (exchanged && !checkExchange(t)) {
+					return;
+				}
 
+				long offset = offset((random + j) % size);
 				Object obj = unsafe().getObjectVolatile(array, offset);
 
-				if (obj == BORROWED) {
-					if (unsafe().compareAndSwapObject(array, offset, obj, t)) {
+				if (obj == EMPTY) {
+					if (exchanged && !cancelExchange(t)) {// 被其他线程抢走了
 						return;
-					} else {
-						break;
 					}
+
+					if (unsafe().compareAndSwapObject(array, offset, obj, t)) {// 归还资源
+						return;
+					}
+
+					break;
 				}
 			}
 
 			WAIT_STRATEGY.idle(i);
 		}
+	}
 
-		throw new RuntimeException("恭喜你中大奖了，这种低概率事件都能发生，真是令人惊诧");
+	private boolean exchange(final Object value) {
+		return unsafe().compareAndSwapObject(this, EXCHANGE, EMPTY, value);
+	}
+
+	private boolean cancelExchange(final Object value) {
+		return unsafe().compareAndSwapObject(this, EXCHANGE, value, EMPTY);
+	}
+
+	private boolean checkExchange(final Object value) {
+		return value == exchange;
+	}
+
+	private T exchange() {
+		Object fast = exchange;
+
+		// 抢一下
+		if (fast != EMPTY && unsafe().compareAndSwapObject(this, EXCHANGE, fast, EMPTY)) {
+			return (T) fast;// 抢到了
+		}
+
+		// 没抢到
+		return null;
 	}
 
 	@Override
 	public void close() throws IOException {
-		isClosing = true;
-
-		for (int i = 0; i < 1000; i++) {
-			int count = 0;
-			for (int j = 0; j < size; j++) {
-				if (unsafe().getObjectVolatile(array, offset(j)) != BORROWED) {
-					count++;
-				}
-			}
-
-			if (count == size) {
-				break;
-			}
-
-			try {
-				TimeUnit.MILLISECONDS.sleep(15);
-			} catch (InterruptedException e) {
-				throw new IOException(e);
-			}
-		}
-
 		for (int i = 0; i < closeList.length; i++) {
 			Object obj = closeList[i];
 
@@ -143,6 +155,8 @@ public class ConcurrentObjectPool<T> implements Closeable {
 
 	static {
 		try {
+			EXCHANGE = unsafe().objectFieldOffset(ConcurrentObjectPool.class.getDeclaredField("exchange"));
+
 			ABASE = unsafe().arrayBaseOffset(Object[].class);
 
 			int scale = unsafe().arrayIndexScale(Object[].class);
@@ -155,5 +169,4 @@ public class ConcurrentObjectPool<T> implements Closeable {
 			throw new Error(e);
 		}
 	}
-
 }
