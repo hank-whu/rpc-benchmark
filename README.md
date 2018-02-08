@@ -11,6 +11,7 @@
  - 所有类库版本在发布时都是最新的, 除非存在bug.
  - 所有框架都尽量参考该项目自带的Benchmark实现.
  - 将会一直持续, 不定期发布测试结果.
+ - 更多说明请移步: [怎样对 RPC 进行有效的性能测试](https://www.jianshu.com/p/cbcdf05eaa5c)
 
 ## 测试用例
  1. boolean existUser(String email), 判断某个 email 是否存在.
