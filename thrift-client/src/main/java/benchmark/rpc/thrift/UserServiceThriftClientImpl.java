@@ -15,10 +15,8 @@ public class UserServiceThriftClientImpl implements benchmark.service.UserServic
 	private final String host = "benchmark-server";
 	private final int port = 8080;
 
-	private static final int NCPU = Runtime.getRuntime().availableProcessors();
-
 	private final LockObjectPool<ThriftUserServiceClient> clientPool = //
-			new LockObjectPool<>(NCPU, () -> new ThriftUserServiceClient(host, port));
+			new LockObjectPool<>(32, () -> new ThriftUserServiceClient(host, port));
 
 	@Override
 	public void close() throws IOException {
