@@ -42,9 +42,11 @@ public class Client {
 	private final JClient client;
 
 	public Client() {
+		SystemPropertyUtil
+				.setProperty("jupiter.executor.factory.consumer.factory_name", "callerRuns");
 		SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
 		SystemPropertyUtil.setProperty("jupiter.io.decoder.composite.buf", "true");
-		client = new DefaultClient().withConnector(new JNettyTcpConnector(true));
+		client = new DefaultClient().withConnector(new JNettyTcpConnector(Runtime.getRuntime().availableProcessors() << 1, true));
 		JConfig config = client.connector().config();
 		config.setOption(JOption.WRITE_BUFFER_HIGH_WATER_MARK, 2048 * 1024);
 		config.setOption(JOption.WRITE_BUFFER_LOW_WATER_MARK, 1024 * 1024);

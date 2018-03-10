@@ -14,6 +14,8 @@ public class Server {
 
 		try {
 			int processors = Runtime.getRuntime().availableProcessors();
+			SystemPropertyUtil
+					.setProperty("jupiter.executor.factory.provider.factory_name", "callerRuns");
 			SystemPropertyUtil.setProperty("jupiter.executor.factory.provider.core.workers",
 					String.valueOf(processors));
 			SystemPropertyUtil.setProperty("jupiter.executor.factory.affinity.thread", "true");
