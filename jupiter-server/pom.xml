@@ -15,7 +15,7 @@
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-1</version.benchmark-base>
-		<version.jupiter>1.2.16</version.jupiter>
+		<version.jupiter>1.2.18.Beta3</version.jupiter>
 		<version.opentracing>0.31.0-RC2</version.opentracing>
 	</properties>
 
