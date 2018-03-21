@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>aeron-client</artifactId>
-	<version>round-1</version>
+	<version>round-2</version>
 	<packaging>jar</packaging>
 
 	<name>aeron-client</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-1</version.benchmark-base>
-		<version.aeron>1.7.0</version.aeron>
+		<version.benchmark-base>round-2</version.benchmark-base>
+		<version.aeron>1.8.2</version.aeron>
 	</properties>
 
 	<dependencies>

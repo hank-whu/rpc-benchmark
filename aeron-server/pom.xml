@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>aeron-server</artifactId>
-	<version>round-1</version>
+	<version>round-2</version>
 	<packaging>jar</packaging>
 
 	<name>aeron-server</name>
@@ -14,10 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-1</version.benchmark-base>
-		<version.jackson>2.9.3</version.jackson>
-		<version.aeron>1.7.0</version.aeron>
-		<version.logback>1.2.3</version.logback>
+		<version.benchmark-base>round-2</version.benchmark-base>
+		<version.aeron>1.8.2</version.aeron>
 	</properties>
 
 	<dependencies>
@@ -35,11 +33,6 @@
 			<groupId>io.aeron</groupId>
 			<artifactId>aeron-client</artifactId>
 			<version>${version.aeron}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${version.logback}</version>
 		</dependency>
 
 		<dependency>

@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>springwebflux-server</artifactId>
-	<version>round-1</version>
+	<version>round-2</version>
 	<packaging>jar</packaging>
 
 	<name>springwebflux-server</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-1</version.benchmark-base>
-		<spring-boot.version>2.0.0.M7</spring-boot.version>
+		<version.benchmark-base>round-2</version.benchmark-base>
+		<spring-boot.version>2.0.0.RELEASE</spring-boot.version>
 	</properties>
 
 	<repositories>

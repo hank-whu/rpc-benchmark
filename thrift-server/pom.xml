@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>thrift-server</artifactId>
-	<version>round-1</version>
+	<version>round-2</version>
 	<packaging>jar</packaging>
 
 	<name>thrift-server</name>
@@ -14,9 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-1</version.benchmark-base>
-		<version.thrift>0.10.0</version.thrift>
-		<version.jsr250>1.0</version.jsr250>
+		<version.benchmark-base>round-2</version.benchmark-base>
+		<version.thrift>0.11.0</version.thrift>
 	</properties>
 
 	<dependencies>
@@ -29,11 +28,6 @@
 			<groupId>org.apache.thrift</groupId>
 			<artifactId>libthrift</artifactId>
 			<version>${version.thrift}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>jsr250-api</artifactId>
-			<version>${version.jsr250}</version>
 		</dependency>
 
 		<dependency>

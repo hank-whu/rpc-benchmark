@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>benchmark-base</artifactId>
-	<version>round-1</version>
+	<version>round-2</version>
 	<packaging>jar</packaging>
 
 	<name>benchmark-base</name>
@@ -16,12 +16,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.jmh>1.20</version.jmh>
 		<logback.version>1.2.3</logback.version>
-		<version.httpclient>4.5.4</version.httpclient>
-		<version.jackson>2.9.3</version.jackson>
+		<version.httpclient>4.5.5</version.httpclient>
+		<version.jackson>2.9.4</version.jackson>
 		<version.kryo>4.0.1</version.kryo>
 		<version.protostuff>1.6.0</version.protostuff>
 		<version.jsr250>1.0</version.jsr250>
-		<version.vibur>21.2</version.vibur>
+		<version.vibur>22.0</version.vibur>
 		<version.conversantmedia-disruptor>1.2.11</version.conversantmedia-disruptor>
 	</properties>
 

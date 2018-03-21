@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>jupiter-server</artifactId>
-	<version>round-1</version>
+	<version>round-2</version>
 	<packaging>jar</packaging>
 
 	<name>jupiter-server</name>
@@ -14,9 +14,9 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-1</version.benchmark-base>
-		<version.jupiter>1.2.18.Beta3</version.jupiter>
-		<version.opentracing>0.31.0-RC2</version.opentracing>
+		<version.benchmark-base>round-2</version.benchmark-base>
+		<version.jupiter>1.2.19.Beta2</version.jupiter>
+		<version.opentracing>0.31.0</version.opentracing>
 	</properties>
 
 	<dependencies>

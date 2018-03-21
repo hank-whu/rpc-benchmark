@@ -13,6 +13,7 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.runner.options.TimeValue;
 
 import benchmark.bean.Page;
 import benchmark.bean.User;
@@ -76,8 +77,10 @@ public class Client extends AbstractClient {
 	public static void main(String[] args) throws Exception {
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
-				.warmupIterations(10)//
+				.warmupIterations(3)//
+				.warmupTime(TimeValue.seconds(60))//
 				.measurementIterations(3)//
+				.measurementTime(TimeValue.seconds(60))//
 				.threads(CONCURRENCY)//
 				.forks(1)//
 				.build();
