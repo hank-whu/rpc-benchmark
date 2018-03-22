@@ -103,9 +103,9 @@ public class Client {
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//
 				.warmupIterations(3)//
-				.warmupTime(TimeValue.seconds(60))//
+				.warmupTime(TimeValue.seconds(10))//
 				.measurementIterations(3)//
-				.measurementTime(TimeValue.seconds(60))//
+				.measurementTime(TimeValue.seconds(10))//
 				.threads(CONCURRENCY)//
 				.forks(1)//
 				.build();
