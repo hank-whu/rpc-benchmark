@@ -77,7 +77,7 @@ object benchmark {
 			return childs.find(_.getName.endsWith("-jar-with-dependencies.jar")).get
 		}
 
-		return childs.find(_.getName.endsWith(".jar")).get
+		return childs.filterNot(_.getName.startsWith("original-")).find(_.getName.endsWith(".jar")).get
 	}
 
 	def taskName(pkg : File) = {
