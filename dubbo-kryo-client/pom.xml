@@ -15,11 +15,7 @@
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-2</version.benchmark-base>
-		<version.dubbo>2.6.1</version.dubbo>
-		<version.spring>5.0.4.RELEASE</version.spring>
-		<version.javassist>3.22.0-GA</version.javassist>
-		<version.netty>3.2.5.Final</version.netty>
-		<version.kryo>4.0.1</version.kryo>
+		<version.dubbo>2.6.0</version.dubbo>
 		<version.javakaffee>0.42</version.javakaffee>
 	</properties>
 
@@ -33,31 +29,6 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
 			<version>${version.dubbo}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${version.spring}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${version.spring}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>${version.javassist}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.netty</groupId>
-			<artifactId>netty</artifactId>
-			<version>${version.netty}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.esotericsoftware</groupId>
-			<artifactId>kryo</artifactId>
-			<version>${version.kryo}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.javakaffee</groupId>
@@ -96,7 +67,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.1.0</version>
