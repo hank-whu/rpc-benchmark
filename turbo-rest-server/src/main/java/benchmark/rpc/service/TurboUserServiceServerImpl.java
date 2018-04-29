@@ -3,6 +3,7 @@ package benchmark.rpc.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,26 +26,25 @@ public class TurboUserServiceServerImpl implements TurboUserService {
 		return CompletableFuture.completedFuture(Boolean.TRUE);
 	}
 
-	private User user = null;
-	private Page<User> page = null;
-
 	@Override
 	public CompletableFuture<User> getUser(long id) {
-		user = new User();
+		User user = new User();
 
 		user.setId(id);
-		user.setName("Doug Lea");
+		user.setName(new String("Doug Lea"));
 		user.setSex(1);
 		user.setBirthday(LocalDate.of(1968, 12, 8));
-		user.setEmail("dong.lea@gmail.com");
-		user.setMobile("18612345678");
-		user.setAddress("北京市 中关村 中关村大街1号 鼎好大厦 1605");
-		user.setIcon("https://www.baidu.com/img/bd_logo1.png");
+		user.setEmail(new String("dong.lea@gmail.com"));
+		user.setMobile(new String("18612345678"));
+		user.setAddress(new String("北京市 中关村 中关村大街1号 鼎好大厦 1605"));
+		user.setIcon(new String("https://www.baidu.com/img/bd_logo1.png"));
 		user.setStatus(1);
 		user.setCreateTime(LocalDateTime.now());
 		user.setUpdateTime(user.getCreateTime());
 
-		List<Integer> permissions = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 19, 88, 86, 89, 90, 91, 92));
+		List<Integer> permissions = new ArrayList<Integer>(
+				Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 19, 88, 86, 89, 90, 91, 92));
+
 		user.setPermissions(permissions);
 
 		return CompletableFuture.completedFuture(user);
@@ -69,13 +69,14 @@ public class TurboUserServiceServerImpl implements TurboUserService {
 			user.setCreateTime(LocalDateTime.now());
 			user.setUpdateTime(user.getCreateTime());
 
-			List<Integer> permissions = new ArrayList<>(List.of(1, 2, 3, 4, 5, 6, 7, 8, 19, 88, 86, 89, 90, 91, 92));
+			List<Integer> permissions = new ArrayList<Integer>(
+					Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 19, 88, 86, 89, 90, 91, 92));
 			user.setPermissions(permissions);
 
 			userList.add(user);
 		}
 
-		page = new Page<>();
+		Page<User> page = new Page<>();
 		page.setPageNo(pageNo);
 		page.setTotal(1000);
 		page.setResult(userList);

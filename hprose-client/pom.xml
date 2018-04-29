@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>hprose-client</artifactId>
-	<version>round-2</version>
+	<version>round-3</version>
 	<packaging>jar</packaging>
 
 	<name>hprose-client</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-2</version.benchmark-base>
-		<version.hprose>2.0.36</version.hprose>
+		<version.benchmark-base>round-3</version.benchmark-base>
+		<version.hprose>2.0.38</version.hprose>
 	</properties>
 
 	<dependencies>

@@ -4,7 +4,7 @@
 
 	<groupId>rpc-benchmark</groupId>
 	<artifactId>netty-server</artifactId>
-	<version>round-2</version>
+	<version>round-3</version>
 	<packaging>jar</packaging>
 
 	<name>netty-server</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-2</version.benchmark-base>
-		<netty.version>4.1.22.Final</netty.version>
+		<version.benchmark-base>round-3</version.benchmark-base>
+		<netty.version>4.1.24.Final</netty.version>
 	</properties>
 
 	<dependencies>

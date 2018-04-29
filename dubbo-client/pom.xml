@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>dubbo-client</artifactId>
-	<version>round-2</version>
+	<version>round-3</version>
 	<packaging>jar</packaging>
 
 	<name>dubbo-client</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-2</version.benchmark-base>
-		<version.dubbo>2.6.0</version.dubbo>
+		<version.benchmark-base>round-3</version.benchmark-base>
+		<version.dubbo>2.6.1</version.dubbo>
 		<version.javakaffee>0.42</version.javakaffee>
 	</properties>
 
