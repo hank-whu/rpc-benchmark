@@ -11,7 +11,7 @@ import org.apache.servicecomb.provider.pojo.RpcSchema;
 import benchmark.bean.Page;
 import benchmark.bean.User;
 
-@RpcSchema(schemaId = "rpc-benchmark")
+@RpcSchema(schemaId = "benchmark")
 public class ServiceCombUserServiceServerImpl implements UserService {
 
 	@Override
