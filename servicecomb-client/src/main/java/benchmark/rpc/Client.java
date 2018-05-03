@@ -95,8 +95,6 @@ public class Client extends AbstractClient {
 				Thread.sleep(1000);
 			}
 		}
-		
-		System.exit(1);
 
 		Options opt = new OptionsBuilder()//
 				.include(Client.class.getSimpleName())//

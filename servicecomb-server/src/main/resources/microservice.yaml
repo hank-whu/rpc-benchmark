@@ -23,7 +23,5 @@ servicecomb:
   service:
     registry:
       address: http://benchmark-server:30100
-  rest:
-    address: benchmark-server:7070
   highway:
     address: benchmark-server:8080

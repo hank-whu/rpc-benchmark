@@ -33,17 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.servicecomb</groupId>
-			<artifactId>provider-springmvc</artifactId>
-			<version>${servicecomb.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicecomb</groupId>
 			<artifactId>transport-highway</artifactId>
-			<version>${servicecomb.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.servicecomb</groupId>
-			<artifactId>transport-rest-vertx</artifactId>
 			<version>${servicecomb.version}</version>
 		</dependency>
 		<!-- Upgrade the commons-lang3 version to support JDK9 and JDK10 -->
