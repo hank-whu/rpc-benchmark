@@ -17,6 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-3</version.benchmark-base>
 		<servicecomb.version>1.0.0-m1</servicecomb.version>
+		<version.commons-lang3>3.7</version.commons-lang3>
 	</properties>
 
 	<dependencies>
@@ -27,8 +28,29 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.servicecomb</groupId>
-			<artifactId>spring-boot-starter-servicecomb</artifactId>
+			<artifactId>provider-pojo</artifactId>
 			<version>${servicecomb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicecomb</groupId>
+			<artifactId>provider-springmvc</artifactId>
+			<version>${servicecomb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicecomb</groupId>
+			<artifactId>transport-highway</artifactId>
+			<version>${servicecomb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicecomb</groupId>
+			<artifactId>transport-rest-vertx</artifactId>
+			<version>${servicecomb.version}</version>
+		</dependency>
+		<!-- Upgrade the commons-lang3 version to support JDK9 and JDK10 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${version.commons-lang3}</version>
 		</dependency>
 
 		<dependency>

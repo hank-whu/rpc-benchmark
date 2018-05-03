@@ -17,6 +17,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-3</version.benchmark-base>
 		<servicecomb.version>1.0.0-m1</servicecomb.version>
+		<version.commons-lang3>3.7</version.commons-lang3>
 	</properties>
 
 	<dependencies>
@@ -49,7 +50,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.7</version>
+			<version>${version.commons-lang3}</version>
 		</dependency>
 
 		<dependency>
@@ -108,30 +109,6 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<createDependencyReducedPom>false</createDependencyReducedPom>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-									<!-- I don't think we need this file -->
-									<resource>META-INF/services/com.weibo.api.motan.codec.Serialization</resource>
-								</transformer>
-							</transformers>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 		<resources>
 			<resource>
