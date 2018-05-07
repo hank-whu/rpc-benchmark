@@ -18,6 +18,7 @@
 		<version.benchmark-base>round-3</version.benchmark-base>
 		<servicecomb.version>1.0.0-m1</servicecomb.version>
 		<version.commons-lang3>3.7</version.commons-lang3>
+		<version.slf4j>1.7.25</version.slf4j>
 	</properties>
 
 	<dependencies>
@@ -25,6 +26,12 @@
 			<groupId>benchmark.rpc</groupId>
 			<artifactId>benchmark-base</artifactId>
 			<version>${version.benchmark-base}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.servicecomb</groupId>
@@ -41,6 +48,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commons-lang3}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${version.slf4j}</version>
 		</dependency>
 
 		<dependency>
@@ -76,24 +88,16 @@
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>benchmark.rpc.Client</mainClass>
-						</manifest>
-					</archive>
+					<fork>true</fork>
+					<mainClass>benchmark.rpc.Client</mainClass>
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
-							<goal>single</goal>
+							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>

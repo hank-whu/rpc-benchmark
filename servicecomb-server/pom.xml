@@ -18,19 +18,9 @@
 		<version.benchmark-base>round-3</version.benchmark-base>
 		<servicecomb.version>1.0.0-m1</servicecomb.version>
 		<version.commons-lang3>3.7</version.commons-lang3>
+		<version.slf4j>1.7.25</version.slf4j>
 	</properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.servicecomb</groupId>
-				<artifactId>java-chassis-dependencies</artifactId>
-				<version>${servicecomb.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -60,10 +50,10 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>${version.commons-lang3}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
+			<version>${version.slf4j}</version>
 		</dependency>
 
 		<dependency>
@@ -99,24 +89,16 @@
 			</plugin>
 
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>benchmark.rpc.Server</mainClass>
-						</manifest>
-					</archive>
+					<fork>true</fork>
+					<mainClass>benchmark.rpc.Server</mainClass>
 				</configuration>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
-							<goal>single</goal>
+							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>
