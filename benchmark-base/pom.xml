@@ -14,14 +14,14 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.jmh>1.20</version.jmh>
+		<version.jmh>1.21</version.jmh>
 		<logback.version>1.2.3</logback.version>
 		<version.httpclient>4.5.5</version.httpclient>
 		<version.jackson>2.9.5</version.jackson>
 		<version.kryo>4.0.2</version.kryo>
 		<version.protostuff>1.6.0</version.protostuff>
 		<version.jsr250>1.0</version.jsr250>
-		<version.vibur>22.1</version.vibur>
+		<version.vibur>22.2</version.vibur>
 		<version.conversantmedia-disruptor>1.2.11</version.conversantmedia-disruptor>
 	</properties>
 

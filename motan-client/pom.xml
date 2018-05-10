@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-3</version.benchmark-base>
 		<version.motan>1.1.0</version.motan>
-		<version.spring>5.0.5.RELEASE</version.spring>
+		<version.spring>5.0.6.RELEASE</version.spring>
 		<version.slf4j>1.7.25</version.slf4j>
 	</properties>
 
