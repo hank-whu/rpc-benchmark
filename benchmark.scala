@@ -1,7 +1,9 @@
-import java.io.{ BufferedReader, File, FileOutputStream, InputStreamReader }
+import java.io.{BufferedReader, File, FileOutputStream, InputStreamReader}
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
+
+import benchmark.exec
 
 import scala.io.Source
 
@@ -15,9 +17,9 @@ object Typ extends Enumeration {
 	val P999 = Value(4, "P999")
 }
 
-case class Item(task : String, typ : Typ.Typ, fun : String, score : Double)
+case class Item(task: String, typ: Typ.Typ, fun: String, score: Double)
 
-case class Record(task : String, thrpt : Double, avgt : Double, p90 : Double, p99 : Double, p999 : Double)
+case class Record(task: String, thrpt: Double, avgt: Double, p90: Double, p99: Double, p999: Double)
 
 object benchmark {
 	val jvmOps = "java -server -Xmx1g -Xms1g -XX:MaxDirectMemorySize=1g -XX:+UseG1GC"
@@ -26,7 +28,7 @@ object benchmark {
 	val funOrder = Array("existUser", "createUser", "getUser", "listUser")
 	val emptyItem = Item(null, Typ.Thrpt, null, 0D)
 
-	def main(args : Array[String]) : Unit = {
+	def main(args: Array[String]): Unit = {
 		installBenchmarkBase()
 
 		val allTasks = getAllTasks()
@@ -44,7 +46,7 @@ object benchmark {
 		exec("benchmark-base", "mvn clean install")
 	}
 
-	def getAllTasks() : Array[String] = {
+	def getAllTasks(): Array[String] = {
 		val folder = new File(".")
 
 		folder
@@ -54,7 +56,7 @@ object benchmark {
 			.sorted
 	}
 
-	def benchmark(taskName : String) {
+	def benchmark(taskName: String) {
 		val serverPackage = packageAndGet(new File(taskName + "-server"))
 		val clientPackage = packageAndGet(new File(taskName + "-client"))
 
@@ -68,7 +70,7 @@ object benchmark {
 		stopServer(serverPackage)
 	}
 
-	def packageAndGet(project : File) : File = {
+	def packageAndGet(project: File): File = {
 		exec(project, "mvn clean package")
 
 		val childs = new File(project, "target").listFiles()
@@ -80,7 +82,7 @@ object benchmark {
 		return childs.filterNot(_.getName.startsWith("original-")).find(_.getName.endsWith(".jar")).get
 	}
 
-	def taskName(pkg : File) = {
+	def taskName(pkg: File) = {
 		val name = pkg.getName
 
 		if (name.endsWith("-jar-with-dependencies.jar")) {
@@ -90,7 +92,7 @@ object benchmark {
 		}
 	}
 
-	def startServer(serverPackage : File) {
+	def startServer(serverPackage: File) {
 		val name = serverPackage.getName
 		println(s"start $name")
 
@@ -98,6 +100,20 @@ object benchmark {
 
 		//copy到benchmark-server
 		exec(serverPackage.getParentFile, s"scp ${name} benchmark@benchmark-server:~")
+
+		if (name.contains("servicecomb")) {
+			//杀掉benchmark-server上的老servicecomb-service-center进程
+			exec(Array("ssh", "benchmark@benchmark-server", "killall go"))
+
+			//benchmark-server上启动servicecomb-service-center服务
+			val downloadCommand = "wget http://mirrors.hust.edu.cn/apache/incubator/servicecomb/incubator-servicecomb-service-center/1.0.0-m1/apache-servicecomb-incubating-service-center-1.0.0-m1-linux-amd64.tar.gz"
+			val unzipCommand = "tar xvf apache-servicecomb-incubating-service-center-1.0.0-m1-linux-amd64.tar.gz"
+			val runCommand = "bash apache-servicecomb-incubating-service-center-1.0.0-m1-linux-amd64/start-service-center.sh"
+
+			exec(Array("ssh", "benchmark@benchmark-server", downloadCommand))
+			exec(Array("ssh", "benchmark@benchmark-server", unzipCommand))
+			exec(Array("ssh", "benchmark@benchmark-server", runCommand))
+		}
 
 		//杀掉benchmark-server上的老进程
 		exec(Array("ssh", "benchmark@benchmark-server", "killall java"))
@@ -107,15 +123,20 @@ object benchmark {
 		exec(Array("ssh", "benchmark@benchmark-server", remoteCommand))
 	}
 
-	def stopServer(serverPackage : File) {
+	def stopServer(serverPackage: File) {
 		val name = serverPackage.getName
 		println(s"stop $name")
 
 		//benchmark-server上启动服务器
 		exec(Array("ssh", "benchmark@benchmark-server", "killall java"))
+
+		if (name.contains("servicecomb")) {
+			//杀掉benchmark-server上的老servicecomb-service-center进程
+			exec(Array("ssh", "benchmark@benchmark-server", "killall go"))
+		}
 	}
 
-	def startClient(clientPackage : File) {
+	def startClient(clientPackage: File) {
 		val name = clientPackage.getName
 		println(s"start $name")
 
@@ -127,16 +148,16 @@ object benchmark {
 		exec(clientPackage.getParentFile, command, resultFile)
 	}
 
-	def exec(path : String, command : String) {
+	def exec(path: String, command: String) {
 		if (path != null) exec(new File(path), command)
 		else exec(null.asInstanceOf[File], command)
 	}
 
-	def exec(command : String) {
+	def exec(command: String) {
 		exec(null.asInstanceOf[File], command)
 	}
 
-	def exec(file : File, command : String, redirect : File = null) {
+	def exec(file: File, command: String, redirect: File = null) {
 		val process = Runtime.getRuntime().exec(command, null, file)
 
 		val inputStream = process.getInputStream()
@@ -147,12 +168,15 @@ object benchmark {
 			redirect.getParentFile.mkdirs();
 		}
 
-		val output : FileOutputStream =
+		val output: FileOutputStream =
 			if (redirect != null) new FileOutputStream(redirect) else null
 
 		try {
 			var line = ""
-			while ({ line = reader.readLine(); line != null }) {
+			while ( {
+				line = reader.readLine();
+				line != null
+			}) {
 				println(line)
 
 				if (output != null) {
@@ -161,7 +185,7 @@ object benchmark {
 				}
 			}
 		} catch {
-			case t : Throwable => t.printStackTrace()
+			case t: Throwable => t.printStackTrace()
 		} finally {
 			reader.close()
 			inputStreamReader.close()
@@ -178,7 +202,7 @@ object benchmark {
 		process.destroy();
 	}
 
-	def exec(commands : Array[String]) {
+	def exec(commands: Array[String]) {
 		val process = Runtime.getRuntime().exec(commands)
 
 		val inputStream = process.getInputStream()
@@ -187,11 +211,14 @@ object benchmark {
 
 		try {
 			var line = ""
-			while ({ line = reader.readLine(); line != null }) {
+			while ( {
+				line = reader.readLine();
+				line != null
+			}) {
 				println(line)
 			}
 		} catch {
-			case t : Throwable => t.printStackTrace()
+			case t: Throwable => t.printStackTrace()
 		} finally {
 			reader.close()
 			inputStreamReader.close()
@@ -214,7 +241,8 @@ object benchmark {
 
 		reportOutput.write(s"\r\n".getBytes("UTF-8"))
 
-		val header = """| framework | thrpt (ops/ms) | avgt (ms) | p90 (ms) | p99 (ms) | p999 (ms) |
+		val header =
+			"""| framework | thrpt (ops/ms) | avgt (ms) | p90 (ms) | p99 (ms) | p999 (ms) |
 				\| :--- | :---: | :---: | :---: | :---: | :---: |
 				\""".stripMargin('\\')
 
@@ -259,7 +287,7 @@ object benchmark {
 		println(s"成功生成性能报告: ${reportFile.getAbsolutePath}")
 	}
 
-	def toRecords(items : Array[Item]) = {
+	def toRecords(items: Array[Item]) = {
 		import Typ._
 
 		items
@@ -280,7 +308,7 @@ object benchmark {
 			.sortBy(-_.thrpt)
 	}
 
-	def extract(task : String, line : String) : Item = {
+	def extract(task: String, line: String): Item = {
 		if (line == null || line.length() == 0) {
 			return null
 		}
