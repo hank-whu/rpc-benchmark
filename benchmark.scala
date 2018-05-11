@@ -3,8 +3,6 @@ import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 
-import benchmark.exec
-
 import scala.io.Source
 
 object Typ extends Enumeration {
