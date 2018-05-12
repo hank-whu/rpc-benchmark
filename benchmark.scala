@@ -101,7 +101,7 @@ object benchmark {
 
 		if (name.contains("servicecomb")) {
 			//杀掉benchmark-server上的老servicecomb-service-center进程
-			exec(Array("ssh", "benchmark@benchmark-server", "killall go"))
+			exec(Array("ssh", "benchmark@benchmark-server", "killall service-center"))
 
 			//benchmark-server上启动servicecomb-service-center服务
 			val downloadCommand = "wget http://mirrors.hust.edu.cn/apache/incubator/servicecomb/incubator-servicecomb-service-center/1.0.0-m1/apache-servicecomb-incubating-service-center-1.0.0-m1-linux-amd64.tar.gz"
@@ -130,7 +130,7 @@ object benchmark {
 
 		if (name.contains("servicecomb")) {
 			//杀掉benchmark-server上的老servicecomb-service-center进程
-			exec(Array("ssh", "benchmark@benchmark-server", "killall go"))
+			exec(Array("ssh", "benchmark@benchmark-server", "killall service-center"))
 		}
 	}
 
