@@ -2,8 +2,9 @@
 几乎所有的 RPC 框架都宣称自己是“高性能”的, 那么实际结果到底如何呢, 让我们来做一个性能测试吧.
 
 ## 测试结果
-- Round-2 2018-03-25 [电脑阅读](https://www.jianshu.com/p/f0f494cfce94)
-- Round-1 2018-01-28 [电脑阅读](https://www.jianshu.com/p/18c95649b1a4) [手机阅读](https://mp.weixin.qq.com/s?__biz=MzU2MzQ0NTgyMw==&mid=2247483664&idx=1&sn=43ccc40f8556fc1a230b1a1288fa774e&chksm=fc5b6840cb2ce1560ecad6e2345d126d86f1c1c962797879b7f4f04abcbf9d5db683afb83794#rd)
+- Round-3 2018-05-12 https://www.jianshu.com/p/caf51f5cfbaa
+- Round-2 2018-03-25 https://www.jianshu.com/p/f0f494cfce94
+- Round-1 2018-01-28 https://www.jianshu.com/p/18c95649b1a4
 
 ## 测试说明
  - 仅限于Java.
