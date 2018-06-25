@@ -7,9 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.stereotype.Component;
+
 import benchmark.bean.Page;
 import benchmark.bean.User;
 
+@Component
 public class TurboUserServiceServerImpl implements TurboUserService {
 
 	@Override

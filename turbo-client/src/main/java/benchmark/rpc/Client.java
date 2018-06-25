@@ -21,6 +21,8 @@ import benchmark.bean.User;
 import benchmark.rpc.service.TurboUserService;
 import benchmark.service.UserService;
 import benchmark.service.UserServiceServerImpl;
+import io.netty.util.ResourceLeakDetector;
+import io.netty.util.ResourceLeakDetector.Level;
 import rpc.turbo.client.TurboClient;
 
 @State(Scope.Benchmark)
@@ -34,6 +36,8 @@ public class Client {
 	private final TurboUserService userService;
 
 	public Client() {
+		ResourceLeakDetector.setLevel(Level.DISABLED);
+
 		client = new TurboClient("turbo-client.conf");
 
 		try {
