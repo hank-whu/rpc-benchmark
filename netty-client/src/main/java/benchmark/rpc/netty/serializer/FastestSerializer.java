@@ -5,22 +5,17 @@ import java.io.IOException;
 import benchmark.rpc.protocol.Request;
 import benchmark.rpc.protocol.Response;
 import io.netty.buffer.ByteBuf;
-import io.protostuff.ByteBufInput;
-import io.protostuff.ByteBufOutput;
-import io.protostuff.Schema;
-import io.protostuff.runtime.RuntimeSchema;
 
-public class ProtostuffSerializer {
+public class FastestSerializer {
 
-	private static final Schema<Request> requestSchema = RuntimeSchema.getSchema(Request.class);
-	private static final Schema<Response> responseSchema = RuntimeSchema.getSchema(Response.class);
+	private static final RequestSerializer requestSerializer = new RequestSerializer();
+	private static final ResponseSerializer responseSerializer = new ResponseSerializer();
 
 	public static void writeRequest(ByteBuf byteBuf, Request request) throws IOException {
 		int beginWriterIndex = byteBuf.writerIndex();
 		byteBuf.writerIndex(beginWriterIndex + 4);
 
-		ByteBufOutput output = new ByteBufOutput(byteBuf);
-		requestSchema.writeTo(output, request);
+		requestSerializer.write(byteBuf, request);
 
 		int finishWriterIndex = byteBuf.writerIndex();
 		int length = finishWriterIndex - beginWriterIndex - 4;
@@ -29,20 +24,14 @@ public class ProtostuffSerializer {
 	}
 
 	public static Request readRequest(ByteBuf byteBuf) throws IOException {
-		ByteBufInput input = new ByteBufInput(byteBuf, true);
-
-		Request request = new Request();
-		requestSchema.mergeFrom(input, request);
-
-		return request;
+		return requestSerializer.read(byteBuf);
 	}
 
 	public static void writeResponse(ByteBuf byteBuf, Response response) throws IOException {
 		int beginWriterIndex = byteBuf.writerIndex();
 		byteBuf.writerIndex(beginWriterIndex + 4);
 
-		ByteBufOutput output = new ByteBufOutput(byteBuf);
-		responseSchema.writeTo(output, response);
+		responseSerializer.write(byteBuf, response);
 
 		int finishWriterIndex = byteBuf.writerIndex();
 		int length = finishWriterIndex - beginWriterIndex - 4;
@@ -51,12 +40,7 @@ public class ProtostuffSerializer {
 	}
 
 	public static Response readResponse(ByteBuf byteBuf) throws IOException {
-		ByteBufInput input = new ByteBufInput(byteBuf, true);
-
-		Response response = new Response();
-		responseSchema.mergeFrom(input, response);
-
-		return response;
+		return responseSerializer.read(byteBuf);
 	}
 
 }
