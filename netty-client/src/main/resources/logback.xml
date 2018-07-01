@@ -2,7 +2,8 @@
 <configuration>
 	<jmxConfigurator />
 
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="console"
+		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
 			</pattern>
@@ -12,8 +13,9 @@
 	<appender name="rollingFile"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>logs/benchmark-rpc-client.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>logs/benchmark-rpc-client.%d{yyyy-MM-dd}.log.gz
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/benchmark-netty-client.%d{yyyy-MM-dd}.log.gz
 			</fileNamePattern>
 		</rollingPolicy>
 		<encoder>
@@ -25,8 +27,8 @@
 	<!-- project default level -->
 	<logger name="benchmark.rpc" level="INFO" />
 
-	<root level="DEBUG">
-		<!-- <appender-ref ref="console" /> -->
+	<root level="WARN">
+		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />
 	</root>
 </configuration>

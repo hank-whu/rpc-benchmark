@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -15,6 +16,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.channel.epoll.EpollEventLoopGroup;
@@ -31,13 +33,15 @@ public class NettyClientConnector implements Closeable {
 		ResourceLeakDetector.setLevel(Level.DISABLED);
 	}
 
+	public static final int CONNECT_COUNT = 1;
+
 	private final FutureContainer futureContainer = new FutureContainer();
 
 	private final String host;
 	private final int port;
-	private volatile long defaultTimeout = 15_000L;
-	private volatile EventLoopGroup eventLoopGroup;
-	private volatile Channel channel;
+	private long defaultTimeout = 15_000L;
+	private EventLoopGroup eventLoopGroup;
+	private final Channel[] channels = new Channel[CONNECT_COUNT];
 
 	public NettyClientConnector(String host, int port) {
 		this.host = host;
@@ -61,8 +65,8 @@ public class NettyClientConnector implements Closeable {
 		futureContainer.addFuture(requestId, future);
 
 		try {
-			channel.writeAndFlush(request);
-			return future.get(timeout, unit);
+			channels[ThreadLocalRandom.current().nextInt(CONNECT_COUNT)].writeAndFlush(request);
+			return future.get();
 		} finally {
 			futureContainer.remove(requestId);
 		}
@@ -70,8 +74,8 @@ public class NettyClientConnector implements Closeable {
 
 	@Override
 	public void close() throws IOException {
-		if (channel != null) {
-			channel.close();
+		for (int i = 0; i < channels.length; i++) {
+			channels[i].close();
 		}
 
 		if (eventLoopGroup != null) {
@@ -99,20 +103,26 @@ public class NettyClientConnector implements Closeable {
 
 	private void doConnect(EventLoopGroup loupGroup, Class<? extends SocketChannel> serverChannelClass, boolean isEpoll)
 			throws InterruptedException {
+
 		final Bootstrap bootstrap = new Bootstrap();
 
 		if (isEpoll) {
 			bootstrap.option(EpollChannelOption.SO_REUSEPORT, true);
 		}
 
-		// bootstrap.option(ChannelOption.TCP_NODELAY, true);
 		bootstrap.option(ChannelOption.SO_REUSEADDR, true);
+		bootstrap.option(ChannelOption.SO_RCVBUF, 256 * 1024);
+		bootstrap.option(ChannelOption.SO_SNDBUF, 256 * 1024);
+		bootstrap.option(ChannelOption.WRITE_BUFFER_WATER_MARK, //
+				new WriteBufferWaterMark(1024 * 1024, 2048 * 1024));
 
 		bootstrap.group(loupGroup);
 		bootstrap.channel(serverChannelClass);
 		bootstrap.handler(new BenchmarkChannelInitializer(futureContainer));
 
-		channel = bootstrap.connect(host, port).sync().channel();
+		for (int i = 0; i < channels.length; i++) {
+			channels[i] = bootstrap.connect(host, port).sync().channel();
+		}
 	}
 
 }

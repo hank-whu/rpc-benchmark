@@ -27,8 +27,10 @@ public class BenchmarkServerHandler extends SimpleChannelInboundHandler<Request>
 		response.setStatusCode((byte) 1);
 		response.setResult(result);
 
-		ctx.pipeline().writeAndFlush(response);
+		ctx.writeAndFlush(response, ctx.voidPromise());
 	}
+	
+	
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

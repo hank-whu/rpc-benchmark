@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.RandomAccess;
 
 import benchmark.bean.User;
 import io.netty.buffer.ByteBuf;
@@ -25,9 +26,16 @@ public class UserSerializer implements Serializer<User> {
 		stringSerializer.write(byteBuf, user.getAddress());
 		stringSerializer.write(byteBuf, user.getIcon());
 
+		List<Integer> permissions = user.getPermissions();
 		byteBuf.writeInt(user.getPermissions().size());
-		for (int permission : user.getPermissions()) {
-			byteBuf.writeInt(permission);
+		if (permissions instanceof RandomAccess) {
+			for (int i = 0; i < permissions.size(); i++) {
+				byteBuf.writeInt(permissions.get(i));
+			}
+		} else {
+			for (int permission : permissions) {
+				byteBuf.writeInt(permission);
+			}
 		}
 
 		byteBuf.writeInt(user.getStatus());
@@ -72,7 +80,7 @@ public class UserSerializer implements Serializer<User> {
 
 		return user;
 	}
-	
+
 	@Override
 	public Class<User> typeClass() {
 		return User.class;
