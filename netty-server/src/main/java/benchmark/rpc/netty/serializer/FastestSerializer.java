@@ -13,7 +13,7 @@ public class FastestSerializer {
 
 	public static void writeRequest(ByteBuf byteBuf, Request request) throws IOException {
 		int beginWriterIndex = byteBuf.writerIndex();
-		byteBuf.writerIndex(beginWriterIndex + 4);
+		byteBuf.writeInt(0);
 
 		requestSerializer.write(byteBuf, request);
 
@@ -29,7 +29,7 @@ public class FastestSerializer {
 
 	public static void writeResponse(ByteBuf byteBuf, Response response) throws IOException {
 		int beginWriterIndex = byteBuf.writerIndex();
-		byteBuf.writerIndex(beginWriterIndex + 4);
+		byteBuf.writeInt(0);
 
 		responseSerializer.write(byteBuf, response);
 
