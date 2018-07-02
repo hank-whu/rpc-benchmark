@@ -29,7 +29,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetector.Level;
 import io.netty.util.concurrent.DefaultThreadFactory;
-import io.netty.util.internal.shaded.org.jctools.queues.atomic.MpscGrowableAtomicArrayQueue;
+import io.netty.util.internal.shaded.org.jctools.queues.atomic.MpscAtomicArrayQueue;
 
 public class NettyClientConnector implements Closeable {
 	static {
@@ -46,7 +46,7 @@ public class NettyClientConnector implements Closeable {
 	private EventLoopGroup eventLoopGroup;
 	private final Channel[] channels = new Channel[CONNECT_COUNT];
 	@SuppressWarnings("unchecked")
-	private final MpscGrowableAtomicArrayQueue<Request>[] queues = new MpscGrowableAtomicArrayQueue[CONNECT_COUNT];
+	private final MpscAtomicArrayQueue<Request>[] queues = new MpscAtomicArrayQueue[CONNECT_COUNT];
 
 	public NettyClientConnector(String host, int port) {
 		this.host = host;
@@ -72,7 +72,7 @@ public class NettyClientConnector implements Closeable {
 
 			int index = ThreadLocalRandom.current().nextInt(CONNECT_COUNT);
 			Channel channel = channels[index];
-			MpscGrowableAtomicArrayQueue<Request> queue = queues[index];
+			MpscAtomicArrayQueue<Request> queue = queues[index];
 
 			while (!queue.offer(request)) {
 				batchSend(channel, queue);
@@ -86,7 +86,7 @@ public class NettyClientConnector implements Closeable {
 		}
 	}
 
-	private void batchSend(Channel channel, MpscGrowableAtomicArrayQueue<Request> queue) {
+	private void batchSend(Channel channel, MpscAtomicArrayQueue<Request> queue) {
 		if (queue.isEmpty()) {
 			return;
 		}
@@ -171,7 +171,7 @@ public class NettyClientConnector implements Closeable {
 
 		for (int i = 0; i < CONNECT_COUNT; i++) {
 			channels[i] = bootstrap.connect(host, port).sync().channel();
-			queues[i] = new MpscGrowableAtomicArrayQueue<>(4 * 1024);
+			queues[i] = new MpscAtomicArrayQueue<>(4 * 1024);
 		}
 	}
 
