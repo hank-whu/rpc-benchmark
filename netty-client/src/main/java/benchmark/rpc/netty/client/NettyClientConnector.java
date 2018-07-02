@@ -98,7 +98,7 @@ public class NettyClientConnector implements Closeable {
 
 			ByteBuf byteBuf = channel.alloc().ioBuffer(1024 * 4);
 
-			while (true) {
+			for (int i = 0; i < 64; i++) {
 				Request request = queue.poll();
 
 				if (request == null) {
