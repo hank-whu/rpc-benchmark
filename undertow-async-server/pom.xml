@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>undertow-async-server</artifactId>
-	<version>round-3</version>
+	<version>round-4</version>
 	<packaging>jar</packaging>
 
 	<name>undertow-async-server</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-3</version.benchmark-base>
-		<version.undertow>2.0.6.Final</version.undertow>
+		<version.benchmark-base>round-4</version.benchmark-base>
+		<version.undertow>2.0.11.Final</version.undertow>
 	</properties>
 
 	<dependencies>

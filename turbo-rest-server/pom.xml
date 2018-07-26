@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>turbo-rest-server</artifactId>
-	<version>round-3</version>
+	<version>round-4</version>
 	<packaging>jar</packaging>
 
 	<name>turbo-rest-server</name>
@@ -14,8 +15,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-3</version.benchmark-base>
-		<version.turbo>0.0.5</version.turbo>
+		<version.benchmark-base>round-4</version.benchmark-base>
+		<version.turbo>0.0.9</version.turbo>
 	</properties>
 
 	<dependencies>
@@ -27,6 +28,11 @@
 		<dependency>
 			<groupId>com.turbo-rpc</groupId>
 			<artifactId>turbo-rpc</artifactId>
+			<version>${version.turbo}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.turbo-rpc</groupId>
+			<artifactId>turbo-protostuff</artifactId>
 			<version>${version.turbo}</version>
 		</dependency>
 
@@ -62,7 +68,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.1.0</version>

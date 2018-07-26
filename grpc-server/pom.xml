@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>grpc-server</artifactId>
-	<version>round-3</version>
+	<version>round-4</version>
 	<packaging>jar</packaging>
 
 	<name>grpc-server</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-3</version.benchmark-base>
-		<version.grpc>1.12.0</version.grpc>
+		<version.benchmark-base>round-4</version.benchmark-base>
+		<version.grpc>1.13.2</version.grpc>
 	</properties>
 
 	<dependencies>
@@ -55,7 +55,7 @@
 			<extension>
 				<groupId>kr.motd.maven</groupId>
 				<artifactId>os-maven-plugin</artifactId>
-				<version>1.5.0.Final</version>
+				<version>1.6.0</version>
 			</extension>
 		</extensions>
 		<plugins>
@@ -64,9 +64,9 @@
 				<artifactId>protobuf-maven-plugin</artifactId>
 				<version>0.5.1</version>
 				<configuration>
-					<protocArtifact>com.google.protobuf:protoc:3.5.1-1:exe:${os.detected.classifier}</protocArtifact>
+					<protocArtifact>com.google.protobuf:protoc:3.6.0:exe:${os.detected.classifier}</protocArtifact>
 					<pluginId>grpc-java</pluginId>
-					<pluginArtifact>io.grpc:protoc-gen-grpc-java:1.12.0:exe:${os.detected.classifier}</pluginArtifact>
+					<pluginArtifact>io.grpc:protoc-gen-grpc-java:${version.grpc}:exe:${os.detected.classifier}</pluginArtifact>
 				</configuration>
 				<executions>
 					<execution>

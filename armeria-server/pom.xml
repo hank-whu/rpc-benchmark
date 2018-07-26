@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>armeria-server</artifactId>
-	<version>round-3</version>
+	<version>round-4</version>
 	<packaging>jar</packaging>
 
 	<name>armeria-server</name>
@@ -14,8 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-3</version.benchmark-base>
-		<armeria.version>0.63.1</armeria.version>
+		<version.benchmark-base>round-4</version.benchmark-base>
+		<armeria.version>0.67.2</armeria.version>
 	</properties>
 
 	<dependencies>

@@ -13,6 +13,7 @@ import org.jupiter.transport.JConnection;
 import org.jupiter.transport.JConnector;
 import org.jupiter.transport.JOption;
 import org.jupiter.transport.UnresolvedAddress;
+import org.jupiter.transport.UnresolvedSocketAddress;
 import org.jupiter.transport.netty.JNettyTcpConnector;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -57,7 +58,7 @@ public class Client {
 		UnresolvedAddress[] addresses = new UnresolvedAddress[4];
 		JConnector<JConnection> connector = client.connector();
 		for (int i = 0; i < addresses.length; i++) {
-			addresses[i] = new UnresolvedAddress("benchmark-server", 18090);
+			addresses[i] = new UnresolvedSocketAddress("benchmark-server", 18090);
 			JConnection connection = connector.connect(addresses[i]);
 			connector.connectionManager().manage(connection);
 		}

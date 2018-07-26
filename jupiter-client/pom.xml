@@ -4,7 +4,7 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>jupiter-client</artifactId>
-	<version>round-3</version>
+	<version>round-4</version>
 	<packaging>jar</packaging>
 
 	<name>jupiter-client</name>
@@ -14,9 +14,8 @@
 		<maven.compiler.source>1.9</maven.compiler.source>
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-3</version.benchmark-base>
-		<version.jupiter>1.2.21</version.jupiter>
-		<version.opentracing>0.31.0</version.opentracing>
+		<version.benchmark-base>round-4</version.benchmark-base>
+		<version.jupiter>1.2.23</version.jupiter>
 	</properties>
 
 	<dependencies>
@@ -29,16 +28,6 @@
 			<groupId>org.jupiter-rpc</groupId>
 			<artifactId>jupiter-all</artifactId>
 			<version>${version.jupiter}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.opentracing</groupId>
-			<artifactId>opentracing-api</artifactId>
-			<version>${version.opentracing}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.opentracing</groupId>
-			<artifactId>opentracing-noop</artifactId>
-			<version>${version.opentracing}</version>
 		</dependency>
 
 		<dependency>
