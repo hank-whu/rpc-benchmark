@@ -9,6 +9,7 @@ public final class WaitStrategy {
 		final int idled = idleCounter + 1;
 
 		if (idleCounter < 10) {
+			Thread.onSpinWait();
 			return idled;
 		}
 
