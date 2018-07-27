@@ -106,7 +106,7 @@ object benchmark {
 			//benchmark-server上启动servicecomb-service-center服务
 			val downloadCommand = "wget https://mirrors.tuna.tsinghua.edu.cn/apache/incubator/servicecomb/incubator-servicecomb-service-center/1.0.0-m2/apache-servicecomb-incubating-service-center-1.0.0-m2-linux-amd64.tar.gz"
 			val unzipCommand = "tar xvf apache-servicecomb-incubating-service-center-1.0.0-m2-linux-amd64.tar.gz"
-			val confCommand = """sed -i "s/127.0.0.1/benchmark-server/g" ~/apache-servicecomb-incubating-service-center-1.0.0-m1-linux-amd64/conf/app.conf"""
+			val confCommand = """sed -i "s/127.0.0.1/benchmark-server/g" ~/apache-servicecomb-incubating-service-center-1.0.0-m2-linux-amd64/conf/app.conf"""
 			val runCommand = "bash apache-servicecomb-incubating-service-center-1.0.0-m2-linux-amd64/start-service-center.sh"
 
 			exec(Array("ssh", "benchmark@benchmark-server", downloadCommand))
