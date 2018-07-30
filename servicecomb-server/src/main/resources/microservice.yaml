@@ -25,3 +25,5 @@ servicecomb:
       address: http://benchmark-server:30100
   highway:
     address: benchmark-server:8080
+    server:
+      thread-count: 2

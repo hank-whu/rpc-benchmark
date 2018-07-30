@@ -23,6 +23,9 @@ servicecomb:
   service:
     registry:
       address: http://benchmark-server:30100
+  highway:
+    client:
+      thread-count: 2
   isolation:
     Consumer:
       enabled: false
