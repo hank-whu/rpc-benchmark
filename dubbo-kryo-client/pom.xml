@@ -15,8 +15,7 @@
 		<maven.compiler.target>1.9</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-4</version.benchmark-base>
-		<version.dubbo>2.6.0</version.dubbo>
-		<version.javakaffee>0.42</version.javakaffee>
+		<version.dubbo>2.7.0</version.dubbo>
 	</properties>
 
 	<dependencies>
@@ -26,14 +25,14 @@
 			<version>${version.benchmark-base}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.alibaba</groupId>
+			<groupId>org.apache.dubbo</groupId>
 			<artifactId>dubbo</artifactId>
 			<version>${version.dubbo}</version>
 		</dependency>
 		<dependency>
-			<groupId>de.javakaffee</groupId>
-			<artifactId>kryo-serializers</artifactId>
-			<version>${version.javakaffee}</version>
+			<groupId>org.apache.dubbo</groupId>
+			<artifactId>dubbo-serialization-kryo</artifactId>
+			<version>${version.dubbo}</version>
 		</dependency>
 
 		<dependency>

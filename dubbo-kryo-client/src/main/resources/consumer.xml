@@ -8,7 +8,7 @@
 
 	<!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
 	<dubbo:reference id="userService" check="false"
-		interface="benchmark.service.UserService" url="dubbo://benchmark-server:8080?serialization=kryo" />
+		interface="benchmark.service.UserService" url="dubbo://benchmark-server:8080" />
 
 	<!-- dubbo://benchmark-rpc:8080?serialization=kryo -->
 
