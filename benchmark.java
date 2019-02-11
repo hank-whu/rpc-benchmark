@@ -23,6 +23,7 @@ public class benchmark {
 
         var allTasks = getAllTasks()
                 .filter(t -> !t.startsWith("jupiter"))
+                //.filter(t -> t.compareTo("jupiter") > 0)
                 .collect(Collectors.toList());
 
         System.out.println("找到以下benchmark项目:");
@@ -294,7 +295,8 @@ public class benchmark {
     }
 
     private static double getScore(List<Item> items, Typ typ) {
-        return items.stream().filter(i -> i.typ == typ).findFirst().get().score;
+        var opt = items.stream().filter(i -> i.typ == typ).findFirst();
+        return opt.isPresent() ? opt.get().score : 0;
     }
 
     private static Item extract(String task, String line) {
