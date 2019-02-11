@@ -1,4 +1,3 @@
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
@@ -23,7 +22,7 @@ public class benchmark {
         installBenchmarkBase();
 
         var allTasks = getAllTasks()
-                //.filter(t -> !t.startsWith("tars"))
+                .filter(t -> !t.startsWith("jupiter"))
                 .collect(Collectors.toList());
 
         System.out.println("找到以下benchmark项目:");
