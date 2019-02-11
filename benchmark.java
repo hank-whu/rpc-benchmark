@@ -219,7 +219,7 @@ public class benchmark {
         var reportWriter = new FileWriter(reportFile, StandardCharsets.UTF_8);
         var props = System.getProperties();
 
-        reportWriter.write("#RPC性能报告\r\n");
+        reportWriter.write("# RPC性能报告\r\n");
 
         reportWriter.write("> 生成时间: " + LocalDateTime.now() + "<br>\r\n");
         reportWriter.write("> 运行环境: " + props.getProperty("os.name") + ", " + props.getProperty("java.vm.name") + " " + props.getProperty("java.runtime.version") + "<br>\r\n");
@@ -253,7 +253,7 @@ public class benchmark {
                     var items = kv.getValue();
                     var records = toRecords(items);
 
-                    uncheck(() -> reportWriter.write("\r\n##$" + fun + "\r\n"));
+                    uncheck(() -> reportWriter.write("\r\n## " + fun + "\r\n"));
                     uncheck(() -> reportWriter.write(header));
 
                     records.forEach(record -> {
@@ -296,8 +296,7 @@ public class benchmark {
     }
 
     private static double getScore(List<Item> items, Typ typ) {
-        var opt = items.stream().filter(i -> i.typ == typ).findFirst();
-        return opt.isPresent() ? opt.get().score : 0;
+        return items.stream().filter(i -> i.typ == typ).findFirst().get().score;
     }
 
     private static Item extract(String task, String line) {
