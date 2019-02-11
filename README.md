@@ -2,6 +2,8 @@
 几乎所有的 RPC 框架都宣称自己是“高性能”的, 那么实际结果到底如何呢, 让我们来做一个性能测试吧.
 
 ## 测试结果
+- Round-5 2019-02-11 https://www.jianshu.com/p/cdd94d0853c3
+- Round-4 2018-08-05 https://www.jianshu.com/p/72b98dc67d9d
 - Round-3 2018-05-12 https://www.jianshu.com/p/caf51f5cfbaa
 - Round-2 2018-03-25 https://www.jianshu.com/p/f0f494cfce94
 - Round-1 2018-01-28 https://www.jianshu.com/p/18c95649b1a4
@@ -24,8 +26,8 @@
 ## 运行说明
 1. 需要两台机器，一台作为客户端，一台作为服务端
 2. 系统要求为 linux x64, 至少 4GB ram
-3. 客户端需要安装 git, jdk 9, scala 12, maven 3
-4. 服务端需要安装 jdk 9
+3. 客户端需要安装 jdk 11, maven 3
+4. 服务端需要安装 jdk 11
 5. 客户端服务端均需要设置 hosts
 > 10.0.0.88 benchmark-client<br>
 > 10.0.0.99 benchmark-server
@@ -36,7 +38,7 @@
 7. 客户端执行如下命令, 结果输出到 benchmark/benchmark-result
 > git clone https://github.com/hank-whu/rpc-benchmark.git<br>
 > cd rpc-benchmark<br>
-> scala benchmark.scala
+> java benchmark.java
 
 ## 开发者必读
 1. cd benchmark-base && mvn install 
