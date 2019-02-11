@@ -4,18 +4,18 @@
 
 	<groupId>benchmark.rpc</groupId>
 	<artifactId>undertow-async-server</artifactId>
-	<version>round-4</version>
+	<version>round-5</version>
 	<packaging>jar</packaging>
 
 	<name>undertow-async-server</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<maven.compiler.source>1.9</maven.compiler.source>
-		<maven.compiler.target>1.9</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.benchmark-base>round-4</version.benchmark-base>
-		<version.undertow>2.0.11.Final</version.undertow>
+		<version.benchmark-base>round-5</version.benchmark-base>
+		<version.undertow>2.0.17.Final</version.undertow>
 	</properties>
 
 	<dependencies>
@@ -45,18 +45,18 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>3.8.0</version>
 				<configuration>
-					<defaultLibBundleDir>lib</defaultLibBundleDir>
-					<source>9</source>
-					<target>9</target>
+
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
