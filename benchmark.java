@@ -259,7 +259,7 @@ public class benchmark {
                         var line = Stream
                                 .of(record.task, record.thrpt, record.avgt, record.p90, record.p99, record.p999)
                                 .map(Objects::toString)
-                                .collect(Collectors.joining("|", "|", "|"));
+                                .collect(Collectors.joining("|", "|", "|\r\n"));
 
                         uncheck(() -> reportWriter.write(line));
                     });
