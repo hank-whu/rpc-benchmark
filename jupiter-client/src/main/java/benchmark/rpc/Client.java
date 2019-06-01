@@ -77,7 +77,7 @@ public class Client {
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	public boolean existUser() throws Exception {
 		String email = String.valueOf(counter.getAndIncrement());
-		return userService.existUser(email);
+		return userService.existUser(email).join();
 	}
 
 	@Benchmark
@@ -86,7 +86,7 @@ public class Client {
 	public boolean createUser() throws Exception {
 		int id = counter.getAndIncrement();
 		User user = _serviceUserService.getUser(id);
-		return userService.createUser(user);
+		return userService.createUser(user).join();
 	}
 
 	@Benchmark
@@ -94,7 +94,7 @@ public class Client {
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	public User getUser() throws Exception {
 		int id = counter.getAndIncrement();
-		return userService.getUser(id);
+		return userService.getUser(id).join();
 	}
 
 	@Benchmark
@@ -102,7 +102,7 @@ public class Client {
 	@OutputTimeUnit(TimeUnit.MILLISECONDS)
 	public Page<User> listUser() throws Exception {
 		int pageNo = counter.getAndIncrement();
-		return userService.listUser(pageNo);
+		return userService.listUser(pageNo).join();
 	}
 
 	public static void main(String[] args) throws Exception {
