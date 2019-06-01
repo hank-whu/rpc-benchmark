@@ -20,12 +20,18 @@ import benchmark.bean.Page;
 import benchmark.bean.User;
 import benchmark.rpc.netty.client.UserServiceNettyClientImpl;
 import benchmark.service.UserService;
+import io.netty.util.ResourceLeakDetector;
+import io.netty.util.ResourceLeakDetector.Level;
 
 @State(Scope.Benchmark)
 public class Client extends AbstractClient {
 	public static final int CONCURRENCY = 32;
 
 	private final UserServiceNettyClientImpl userService = new UserServiceNettyClientImpl();
+	
+	static {
+		ResourceLeakDetector.setLevel(Level.DISABLED);
+	}
 
 	@Override
 	protected UserService getUserService() {

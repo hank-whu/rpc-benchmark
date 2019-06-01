@@ -16,8 +16,6 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.alibaba.dubbo.config.ProtocolConfig;
-
 import benchmark.bean.Page;
 import benchmark.bean.User;
 import benchmark.service.UserService;
@@ -43,7 +41,6 @@ public class Client extends AbstractClient {
 	@TearDown
 	public void close() throws IOException {
 		context.close();
-		ProtocolConfig.destroyAll();
 	}
 
 	@Benchmark

@@ -22,11 +22,6 @@ public class BenchmarkClientHandler extends SimpleChannelInboundHandler<Response
 	}
 
 	@Override
-	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-		ctx.flush();
-	}
-
-	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		LOGGER.error("Exception caught on {}, ", ctx.channel(), cause);
 		ctx.channel().close();

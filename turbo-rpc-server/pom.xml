@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>benchmark.rpc</groupId>
+	<artifactId>turbo-rpc-server</artifactId>
+	<version>round-5</version>
+	<packaging>jar</packaging>
+
+	<name>turbo-rpc-server</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.benchmark-base>round-5</version.benchmark-base>
+		<version.spring-boot>2.1.2.RELEASE</version.spring-boot>
+		<version.turbo>0.0.9</version.turbo>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>benchmark.rpc</groupId>
+			<artifactId>benchmark-base</artifactId>
+			<version>${version.benchmark-base}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.turbo-rpc</groupId>
+			<artifactId>turbo-rpc</artifactId>
+			<version>${version.turbo}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.turbo-rpc</groupId>
+			<artifactId>turbo-kryo</artifactId>
+			<version>${version.turbo}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.turbo-rpc</groupId>
+			<artifactId>turbo-protostuff</artifactId>
+			<version>${version.turbo}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.turbo-rpc</groupId>
+			<artifactId>turbo-spring-boot-starter</artifactId>
+			<version>${version.turbo}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>${version.spring-boot}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<encoding>UTF-8</encoding>
+					<compilerArgument>-parameters</compilerArgument>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>benchmark.rpc.Server</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
+</project>

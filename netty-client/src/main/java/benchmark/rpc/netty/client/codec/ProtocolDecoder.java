@@ -1,6 +1,6 @@
 package benchmark.rpc.netty.client.codec;
 
-import benchmark.rpc.netty.serializer.ProtostuffSerializer;
+import benchmark.rpc.netty.serializer.FastestSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
@@ -20,7 +20,7 @@ public class ProtocolDecoder extends LengthFieldBasedFrameDecoder {
 		if (buffer != null) {
 
 			try {
-				return ProtostuffSerializer.readResponse(buffer);
+				return FastestSerializer.readResponse(buffer);
 			} finally {
 				buffer.release();
 			}
