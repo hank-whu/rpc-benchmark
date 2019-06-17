@@ -1,6 +1,8 @@
 package benchmark.rpc;
 
 import benchmark.service.JupiterUserServiceServerImpl;
+import io.netty.util.ResourceLeakDetector;
+
 import org.jupiter.common.util.SystemPropertyUtil;
 import org.jupiter.rpc.DefaultServer;
 import org.jupiter.rpc.JServer;
@@ -11,16 +13,11 @@ import org.jupiter.transport.netty.JNettyTcpAcceptor;
 public class Server {
 
 	public static void main(String[] args) throws InterruptedException {
-
+		ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED);
 		try {
-			int processors = Runtime.getRuntime().availableProcessors();
-			SystemPropertyUtil
-					.setProperty("jupiter.executor.factory.provider.factory_name", "callerRuns");
-			SystemPropertyUtil.setProperty("jupiter.executor.factory.provider.core.workers",
-					String.valueOf(processors));
+			SystemPropertyUtil.setProperty("jupiter.executor.factory.provider.factory_name", "callerRuns");
 			SystemPropertyUtil.setProperty("jupiter.executor.factory.affinity.thread", "true");
 			SystemPropertyUtil.setProperty("jupiter.tracing.needed", "false");
-
 			JServer server = new DefaultServer().withAcceptor(new JNettyTcpAcceptor(18090, true));
 			JConfig config = server.acceptor().configGroup().child();
 			config.setOption(JOption.WRITE_BUFFER_HIGH_WATER_MARK, 2048 * 1024);

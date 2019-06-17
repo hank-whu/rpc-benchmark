@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.jupiter.rpc.ServiceProviderImpl;
 
@@ -21,20 +22,20 @@ import benchmark.bean.User;
 public class JupiterUserServiceServerImpl implements JupiterUserService {
 
 	@Override
-	public boolean existUser(String email) {
+	public CompletableFuture<Boolean> existUser(String email) {
 		if (email == null || email.isEmpty()) {
-			return true;
+			return CompletableFuture.completedFuture(Boolean.TRUE);
 		}
 
 		if (email.charAt(email.length() - 1) < '5') {
-			return false;
+			return CompletableFuture.completedFuture(Boolean.FALSE);
 		}
 
-		return true;
+		return CompletableFuture.completedFuture(Boolean.TRUE);
 	}
 
 	@Override
-	public User getUser(long id) {
+	public CompletableFuture<User> getUser(long id) {
 		User user = new User();
 
 		user.setId(id);
@@ -54,11 +55,11 @@ public class JupiterUserServiceServerImpl implements JupiterUserService {
 
 		user.setPermissions(permissions);
 
-		return user;
+		return CompletableFuture.completedFuture(user);
 	}
 
 	@Override
-	public Page<User> listUser(int pageNo) {
+	public CompletableFuture<Page<User>> listUser(int pageNo) {
 		List<User> userList = new ArrayList<>(15);
 
 		for (int i = 0; i < 15; i++) {
@@ -88,16 +89,16 @@ public class JupiterUserServiceServerImpl implements JupiterUserService {
 		page.setTotal(1000);
 		page.setResult(userList);
 
-		return page;
+		return CompletableFuture.completedFuture(page);
 	}
 
 	@Override
-	public boolean createUser(User user) {
+	public CompletableFuture<Boolean> createUser(User user) {
 		if (user == null) {
-			return false;
+			return CompletableFuture.completedFuture(Boolean.FALSE);
 		}
 
-		return true;
+		return CompletableFuture.completedFuture(Boolean.TRUE);
 	}
 
 }
