@@ -7,7 +7,7 @@
 	<version>round-5</version>
 	<packaging>jar</packaging>
 
-	<name>dubbo-kryo-server</name>
+	<name>brpc-server</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -61,7 +61,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.1.0</version>
