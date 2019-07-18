@@ -1,27 +1,20 @@
 package benchmark.rpc;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
+import benchmark.bean.Page;
+import benchmark.bean.User;
+import benchmark.service.UserService;
 import com.baidu.brpc.client.BrpcProxy;
 import com.baidu.brpc.client.RpcClient;
 import com.baidu.brpc.client.RpcClientOptions;
 import com.baidu.brpc.client.loadbalance.LoadBalanceStrategy;
-import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
-import org.openjdk.jmh.annotations.Scope;
-import org.openjdk.jmh.annotations.State;
-import org.openjdk.jmh.annotations.TearDown;
+import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 
-import benchmark.bean.Page;
-import benchmark.bean.User;
-import benchmark.service.UserService;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @State(Scope.Benchmark)
 public class Client extends AbstractClient {
@@ -32,11 +25,14 @@ public class Client extends AbstractClient {
 
     public Client() {
         RpcClientOptions clientOption = new RpcClientOptions();
+        clientOption.setProtocolType(com.baidu.brpc.protocol.Options.ProtocolType.PROTOCOL_HTTP_JSON_VALUE);
         clientOption.setWriteTimeoutMillis(1000);
         clientOption.setReadTimeoutMillis(1000);
         clientOption.setMaxTotalConnections(1000);
         clientOption.setMinIdleConnections(10);
-        clientOption.setLoadBalanceType(LoadBalanceStrategy.LOAD_BALANCE_FAIR);
+        clientOption.setLoadBalanceType(LoadBalanceStrategy.LOAD_BALANCE_RANDOM);
+        clientOption.setCompressType(com.baidu.brpc.protocol.Options.CompressType.COMPRESS_TYPE_ZLIB);
+
 
         String serviceUrl = "list://benchmark-server:8002";
 
