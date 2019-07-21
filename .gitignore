@@ -34,3 +34,5 @@ hs_err_pid*
 .idea
 .settings
 .project
+
+*.iml

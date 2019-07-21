@@ -15,7 +15,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-5</version.benchmark-base>
-		<version.dubbo>2.7.1</version.dubbo>
+		<version.dubbo>2.7.3</version.dubbo>
 	</properties>
 
 	<dependencies>
