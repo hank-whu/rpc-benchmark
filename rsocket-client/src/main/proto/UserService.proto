@@ -1,0 +1,57 @@
+syntax = "proto3";
+package grpc;
+
+import public "google/protobuf/timestamp.proto"; 
+
+option java_package = "benchmark.rpc.grpc";
+
+service UserService {
+  rpc userExist (UserExistRequest) returns (UserExistResponse) {}
+  
+  rpc createUser (User) returns (CreateUserResponse) {}
+  
+  rpc getUser (GetUserRequest) returns (User) {}
+  
+  rpc listUser (ListUserRequest) returns (UserPage) {}
+}
+
+message UserExistRequest {
+  string email = 1;
+}
+
+message UserExistResponse {
+  bool exist = 1;
+}
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message User {
+	int64 id = 1;
+	string name = 2;
+	int32 sex = 3;
+	int32 birthday = 4;
+	string email = 5;
+	string mobile = 6;
+	string address = 7;
+	string icon = 8;
+	repeated int32 permissions = 9;
+	int32 status = 10;
+	int64 createTime = 11;
+	int64 updateTime = 12;
+}
+
+message CreateUserResponse {
+  bool success = 1;
+}
+
+message ListUserRequest {
+  int32 pageNo = 1;
+}
+
+message UserPage {
+  	int32 pageNo = 1;
+	int32 total = 2;
+	repeated User result = 3;
+}
