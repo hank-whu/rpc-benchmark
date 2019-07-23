@@ -52,6 +52,8 @@
         <module>undertow-server</module>
         <module>brpc-client</module>
         <module>brpc-server</module>
+        <module>rsocket-server</module>
+        <module>rsocket-client</module>
     </modules>
 
     <build>
