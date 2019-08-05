@@ -12,6 +12,7 @@ public class Server {
 		ServerBuilder//
 				.forPort(port)//
 				.addService(new UserServiceGrpcServerImpl())//
+				.directExecutor()
 				.build()//
 				.start()//
 				.awaitTermination();
