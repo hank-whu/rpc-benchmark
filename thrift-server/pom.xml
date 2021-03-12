@@ -15,7 +15,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-5</version.benchmark-base>
-		<version.thrift>0.12.0</version.thrift>
+		<version.thrift>0.14.0</version.thrift>
 	</properties>
 
 	<dependencies>
