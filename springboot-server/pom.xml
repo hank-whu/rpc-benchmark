@@ -15,7 +15,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-5</version.benchmark-base>
-		<version.spring-boot>2.1.2.RELEASE</version.spring-boot>
+		<version.spring-boot>2.5.12</version.spring-boot>
 	</properties>
 
 	<dependencies>
