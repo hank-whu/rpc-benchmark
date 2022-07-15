@@ -15,7 +15,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.benchmark-base>round-5</version.benchmark-base>
-		<version.undertow>2.0.17.Final</version.undertow>
+		<version.undertow>2.2.15.Final</version.undertow>
 	</properties>
 
 	<dependencies>
