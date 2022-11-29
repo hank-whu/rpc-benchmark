@@ -32,7 +32,7 @@ public class Client {
 	public Client() {
 		ResourceLeakDetector.setLevel(Level.DISABLED);
 
-		ClientOptions option = new ClientOptions().setEndpoint("focus.client").connect("localhost", 3333);
+		ClientOptions option = new ClientOptions().setEndpoint("focus.client").connect("benchmark-server", 3333);
 		 client = new FocusClient(option);
 		try {
 			 userService = client.importing(UserService.class);

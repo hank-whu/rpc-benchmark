@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>com.dinstone.focus</groupId>
-            <artifactId>focus-client</artifactId>
+            <artifactId>focus-client-photon</artifactId>
             <version>0.9.8</version>
         </dependency>
         <dependency>

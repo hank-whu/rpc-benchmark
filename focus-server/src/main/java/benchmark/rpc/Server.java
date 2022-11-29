@@ -10,7 +10,7 @@ public class Server {
 
     public static void main(String[] args) {
 
-        ServerOptions serverOptions = new ServerOptions().listen("localhost", 3333)
+        ServerOptions serverOptions = new ServerOptions().listen(3333)
                 .setEndpoint("focus.server");
         FocusServer server = new FocusServer(serverOptions);
 
