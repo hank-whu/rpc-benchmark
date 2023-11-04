@@ -10,19 +10,18 @@ public class Server {
 
     public static void main(String[] args) {
 
-        ServerOptions serverOptions = new ServerOptions().listen(3333)
-                .setEndpoint("focus.server");
+        ServerOptions serverOptions = new ServerOptions("focus.server").listen(3333);
         FocusServer server = new FocusServer(serverOptions);
 
         // exporting service
         server.exporting(UserService.class, new UserServiceServerImpl());
-
         try {
+            server.start();
             System.in.read();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        server.destroy();
+        server.close();
 
     }
 
