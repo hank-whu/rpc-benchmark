@@ -54,6 +54,8 @@
         <module>brpc-server</module>
         <module>rsocket-server</module>
         <module>rsocket-client</module>
+        <module>focus-client</module>
+        <module>focus-server</module>
     </modules>
 
     <build>
