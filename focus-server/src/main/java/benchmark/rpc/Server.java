@@ -8,20 +8,18 @@ import com.dinstone.focus.server.ServerOptions;
 
 public class Server {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         ServerOptions serverOptions = new ServerOptions("focus.server").listen(3333);
-        FocusServer server = new FocusServer(serverOptions);
 
         // exporting service
-        server.exporting(UserService.class, new UserServiceServerImpl());
-        try {
-            server.start();
-            System.in.read();
-        } catch (Exception e) {
-            e.printStackTrace();
+        try (FocusServer focusServer = new FocusServer(serverOptions)) {
+            focusServer.exporting(UserService.class, new UserServiceServerImpl());
+
+            focusServer.start();
+
+            Thread.sleep(Integer.MAX_VALUE);
         }
-        server.close();
 
     }
 
